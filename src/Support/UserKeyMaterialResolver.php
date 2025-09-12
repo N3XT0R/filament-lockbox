@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Support;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use RuntimeException;
 
@@ -25,7 +25,7 @@ class UserKeyMaterialResolver
         $this->providers[] = $provider;
     }
 
-    public function resolve(Model $user, ?string $input): string
+    public function resolve(User $user, ?string $input): string
     {
         foreach ($this->providers as $provider) {
             if ($provider->supports($user)) {

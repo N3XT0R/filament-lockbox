@@ -58,6 +58,10 @@ name = "filament-lockbox"
 language = "php"
 coverage = true
 
+[coverage]
+report = "build/logs/clover.xml"
+tool = "phpunit"
+
 [smells]
 mode = "comment"
 

@@ -17,6 +17,15 @@ You can install the package via composer:
 composer require n3xt0r/filament-lockbox
 ```
 
+> [!IMPORTANT]
+> If you have not set up a custom theme and are using Filament Panels follow the instructions in the [Filament Docs](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme) first.
+
+After setting up a custom theme add the plugin's views to your theme css file or your app's css file if using the standalone packages.
+
+```css
+@source '../../../../vendor/n3xt0r/filament-lockbox/resources/**/*.blade.php';
+```
+
 You can publish and run the migrations with:
 
 ```bash
@@ -66,7 +75,7 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please review [our security policy](.github/SECURITY.md) on how to report security vulnerabilities.
 
 ## Credits
 

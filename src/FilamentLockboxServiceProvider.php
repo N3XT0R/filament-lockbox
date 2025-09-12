@@ -10,11 +10,11 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
-use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
-use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
+use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 
 class FilamentLockboxServiceProvider extends PackageServiceProvider
 {
@@ -101,8 +101,8 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-lockbox', __DIR__ . '/../resources/dist/components/filament-lockbox.js'),
-            Css::make('filament-lockbox-styles', __DIR__ . '/../resources/dist/filament-lockbox.css'),
-            Js::make('filament-lockbox-scripts', __DIR__ . '/../resources/dist/filament-lockbox.js'),
+            // Css::make('filament-lockbox-styles', __DIR__ . '/../resources/dist/filament-lockbox.css'),
+            // Js::make('filament-lockbox-scripts', __DIR__ . '/../resources/dist/filament-lockbox.js'),
         ];
     }
 

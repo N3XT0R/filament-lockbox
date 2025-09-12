@@ -15,6 +15,7 @@ use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
 use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
+use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -93,10 +94,28 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
 
         // Testing
         Testable::mixin(new TestsFilamentLockbox());
+        $this->registerComponents();
+        $this->registerSingletons();
+    }
 
+    protected function registerComponents(): void
+    {
         // Register a macro for convenient usage in Filament forms
         FormsComponent::macro('encryptedText', function (string $name) {
             return EncryptedTextInput::make($name);
+        });
+    }
+
+    protected function registerSingletons(): void
+    {
+        $this->app->singleton(UserKeyMaterialResolver::class, function () {
+            $providerClasses = config('filament-lockbox.providers', []);
+
+            $providers = array_map(static function (string $class) {
+                return new $class();
+            }, $providerClasses);
+
+            return new UserKeyMaterialResolver($providers);
         });
     }
 

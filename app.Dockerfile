@@ -17,4 +17,4 @@ RUN docker-php-ext-install pdo_mysql zip \
     && curl -sS https://getcomposer.org/installer \
                  | php -- --install-dir=/usr/local/bin --filename=composer \
 
-
+RUN rm -rf /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini

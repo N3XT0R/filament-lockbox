@@ -5,7 +5,12 @@
     "N3XT0R",
     "laravel",
     "filamentphp",
-    "filament-lockbox"
+    "filament-lockbox",
+    "encryption",
+    "security",
+    "plugin",
+    "totp",
+    "2fa"
   ],
   "homepage": "https://github.com/n3xt0r/filament-lockbox",
   "support": {

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3XT0R\FilamentLockbox;
 
+use Filament\Forms\FormsComponent;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
@@ -10,11 +13,12 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
+use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
+use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
-use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 
 class FilamentLockboxServiceProvider extends PackageServiceProvider
 {
@@ -58,19 +62,21 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void
+    {
+    }
 
     public function packageBooted(): void
     {
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
-            $this->getAssetPackageName()
+            $this->getAssetPackageName(),
         );
 
         FilamentAsset::registerScriptData(
             $this->getScriptData(),
-            $this->getAssetPackageName()
+            $this->getAssetPackageName(),
         );
 
         // Icon Registration
@@ -86,7 +92,12 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
         }
 
         // Testing
-        Testable::mixin(new TestsFilamentLockbox);
+        Testable::mixin(new TestsFilamentLockbox());
+
+        // Register a macro for convenient usage in Filament forms
+        FormsComponent::macro('encryptedText', function (string $name) {
+            return EncryptedTextInput::make($name);
+        });
     }
 
     protected function getAssetPackageName(): ?string

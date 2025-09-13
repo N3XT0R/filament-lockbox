@@ -26,7 +26,7 @@
             @endif
 
             @if ($supportsLockbox)
-                <x-filament::form wire:submit="savePassword">
+                <x-filament::form wire:submit="saveSettings">
                     <x-filament::grid>
                         @foreach ($this->getFormSchema() as $field)
                             {{ $field }}
@@ -34,7 +34,7 @@
                     </x-filament::grid>
 
                     <x-filament::button type="submit" color="primary">
-                        {{ __('filament-lockbox::lockbox.buttons.set_password') }}
+                        {{ __('filament-lockbox::lockbox.buttons.save_settings') }}
                     </x-filament::button>
                 </x-filament::form>
             @endif

@@ -61,4 +61,24 @@ class UserKeyMaterialResolverTest extends TestCase
         $this->expectException(RuntimeException::class);
         $resolver->resolve($user, null);
     }
+
+    public function testResolveUsesExplicitProviderClass(): void
+    {
+        $provider = new class () implements UserKeyMaterialProviderInterface {
+            public function supports(User $user): bool
+            {
+                return true;
+            }
+
+            public function provide(User $user, ?string $input): string
+            {
+                return 'explicit';
+            }
+        };
+
+        $resolver = new UserKeyMaterialResolver([$provider]);
+        $user = new User();
+
+        $this->assertSame('explicit', $resolver->resolve($user, null, $provider::class));
+    }
 }

@@ -27,6 +27,16 @@ interface HasLockboxKeys
     public function setCryptoPasswordHash(string $hash): void;
 
     /**
+     * Get the selected user key material provider.
+     */
+    public function getLockboxProvider(): ?string;
+
+    /**
+     * Set the selected user key material provider.
+     */
+    public function setLockboxProvider(string $provider): void;
+
+    /**
      * Generate and set a fresh user key if none exists.
      */
     public function initializeUserKeyIfMissing(): void;

@@ -15,13 +15,16 @@ return new class () extends Migration {
 
             // Stores hashed crypto password (used as partB if TOTP is not enabled)
             $table->string('crypto_password_hash')->nullable();
+
+            // Selected user key material provider
+            $table->string('lockbox_provider')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            $table->dropColumn(['encrypted_user_key', 'crypto_password_hash']);
+            $table->dropColumn(['encrypted_user_key', 'crypto_password_hash', 'lockbox_provider']);
         });
     }
 };

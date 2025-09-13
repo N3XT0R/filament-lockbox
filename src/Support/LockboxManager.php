@@ -17,7 +17,7 @@ class LockboxManager
      * Combines server-side key (encrypted_user_key) with user-provided input (TOTP or crypto password).
      *
      */
-    public function forUser(User $user, ?string $input = null): Encrypter
+    public function forUser(User $user, ?string $input = null, ?string $providerClass = null): Encrypter
     {
         $this->assertValidUserModel($user);
 
@@ -31,7 +31,8 @@ class LockboxManager
         $partA = Crypt::decryptString($encryptedKey);
 
         $materialResolver = app(UserKeyMaterialResolver::class);
-        $partB = $materialResolver->resolve($user, $input);
+        $providerClass ??= $user->getLockboxProvider();
+        $partB = $materialResolver->resolve($user, $input, $providerClass);
 
         // Derive final key from partA and partB
         $finalKey = hash_hkdf('sha256', $partA . $partB, 32, 'filament-lockbox');

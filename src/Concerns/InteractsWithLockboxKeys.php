@@ -42,6 +42,22 @@ trait InteractsWithLockboxKeys
         $this->setAttribute('crypto_password_hash', $hash);
     }
 
+    public function getLockboxProvider(): ?string
+    {
+        $this->ensureModelContext();
+
+        /** @var Model $this */
+        return $this->getAttribute('lockbox_provider');
+    }
+
+    public function setLockboxProvider(string $provider): void
+    {
+        $this->ensureModelContext();
+        /** @var Model $this */
+        $this->setAttribute('lockbox_provider', $provider);
+        $this->save();
+    }
+
     /**
      * Generate a new encrypted user key if none exists.
      * @throws RandomException

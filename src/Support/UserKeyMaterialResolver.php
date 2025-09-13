@@ -25,8 +25,29 @@ class UserKeyMaterialResolver
         $this->providers[] = $provider;
     }
 
-    public function resolve(User $user, ?string $input): string
+    public function resolve(User $user, ?string $input, ?string $providerClass = null): string
     {
+        if ($providerClass !== null) {
+            foreach ($this->providers as $provider) {
+                if ($provider::class === $providerClass) {
+                    if (!$provider->supports($user)) {
+                        throw new RuntimeException(sprintf(
+                            'Provider %s does not support model %s.',
+                            $providerClass,
+                            $user::class,
+                        ));
+                    }
+
+                    return $provider->provide($user, $input);
+                }
+            }
+
+            throw new RuntimeException(sprintf(
+                'UserKeyMaterial provider %s is not registered.',
+                $providerClass,
+            ));
+        }
+
         foreach ($this->providers as $provider) {
             if ($provider->supports($user)) {
                 return $provider->provide($user, $input);

@@ -210,10 +210,13 @@ $form
 
 ---
 
-### 🔑 Optional Integrations
+### 🔑 Optional Integration: Passkeys
 
-- **[marcelweidum/filament-passkeys](https://github.com/marcelweidum/filament-passkeys)**  
-  Add WebAuthn/Passkeys support as an additional key material provider for Filament Lockbox.
+If you want to use WebAuthn/Passkeys for deriving Lockbox encryption keys, install:
+
+```bash
+composer require spatie/laravel-passkeys
+```
 
 ---
 

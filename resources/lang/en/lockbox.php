@@ -18,4 +18,12 @@ return [
         'key_generated' => 'Lockbox key generated successfully.',
         'password_set' => 'Crypto password set successfully.',
     ],
+    'modal' => [
+        'unlock_heading' => 'Unlock your Lockbox',
+        'unlock_description' => 'Enter your crypto password or TOTP code to proceed.',
+    ],
+    'form' => [
+        'crypto_password' => 'Crypto Password',
+        'unlock' => 'Unlock Lockbox',
+    ],
 ];

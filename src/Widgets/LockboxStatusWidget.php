@@ -17,6 +17,9 @@ use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
 class LockboxStatusWidget extends Widget
 {
+    /**
+     * @var view-string
+     */
     protected string $view = 'filament-lockbox::widgets.lockbox-status-widget';
 
     public ?string $cryptoPassword = null;

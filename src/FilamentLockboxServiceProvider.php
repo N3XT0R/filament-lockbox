@@ -118,7 +118,7 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
             }, $providerClasses);
 
             $resolver = new UserKeyMaterialResolver($providers);
-            // ✅ Always register fallback provider
+            // Always register fallback provider
             $resolver->registerProvider(new CryptoPasswordKeyMaterialProvider());
 
             return $resolver;

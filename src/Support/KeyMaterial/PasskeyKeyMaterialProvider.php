@@ -24,7 +24,7 @@ class PasskeyKeyMaterialProvider implements UserKeyMaterialProviderInterface
         }
 
         /**
-         * @var User|HasPasskeys $user
+         * @var User&HasPasskeys $user
          */
         if (!$user->passkeys()->exists()) {
             throw new RuntimeException('User has no registered passkeys.');

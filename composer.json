@@ -43,9 +43,6 @@
         "rector/rector": "^2.0",
         "spatie/laravel-ray": "^1.26"
     },
-    "suggest": {
-        "marcelweidum/filament-passkeys": "Optional integration for WebAuthn/Passkeys"
-    },
     "autoload": {
         "psr-4": {
             "N3XT0R\\FilamentLockbox\\": "src/",

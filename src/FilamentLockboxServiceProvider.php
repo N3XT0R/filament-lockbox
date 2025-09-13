@@ -16,6 +16,7 @@ use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
 use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
+use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -116,7 +117,11 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
                 return new $class();
             }, $providerClasses);
 
-            return new UserKeyMaterialResolver($providers);
+            $resolver = new UserKeyMaterialResolver($providers);
+            // ✅ Always register fallback provider
+            $resolver->registerProvider(new CryptoPasswordKeyMaterialProvider());
+
+            return $resolver;
         });
     }
 

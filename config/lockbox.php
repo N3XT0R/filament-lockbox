@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
 return [
@@ -23,6 +22,5 @@ return [
 
     'providers' => [
         TotpKeyMaterialProvider::class,
-        CryptoPasswordKeyMaterialProvider::class,
     ],
 ];

@@ -1,3 +1,9 @@
+[![CI](https://github.com/n3xt0r/filament-lockbox/actions/workflows/run-tests.yml/badge.svg)](https://github.com/n3xt0r/filament-lockbox/actions/workflows/run-tests.yml)
+[![Maintainability](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox)
+[![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox)
+[![Latest Stable Version](https://poser.pugx.org/n3xt0r/filament-lockbox/v/stable)](https://packagist.org/packages/n3xt0r/filament-lockbox)
+[![License](https://poser.pugx.org/n3xt0r/filament-lockbox/license)](https://packagist.org/packages/n3xt0r/filament-lockbox)
+
 # Filament Lockbox
 
 ![Filament Lockbox Logo](art/lockbox-logo.png)

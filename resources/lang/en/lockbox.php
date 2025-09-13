@@ -26,4 +26,12 @@ return [
         'crypto_password' => 'Crypto Password',
         'unlock' => 'Unlock Lockbox',
     ],
+
+    'decryption' => [
+        'status' => [
+            'not_supported' => 'This user model does not support Lockbox keys.',
+            'input_required' => 'Unlock required to view this field.',
+            'decrypt_failed' => 'Unable to decrypt value.',
+        ],
+    ],
 ];

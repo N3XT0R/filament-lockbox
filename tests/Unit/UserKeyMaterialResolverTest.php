@@ -14,7 +14,7 @@ class UserKeyMaterialResolverTest extends TestCase
 {
     public function testResolveReturnsValueFromSupportingProvider(): void
     {
-        $provider = new class implements UserKeyMaterialProviderInterface {
+        $provider = new class () implements UserKeyMaterialProviderInterface {
             public function supports(User $user): bool
             {
                 return true;
@@ -36,7 +36,7 @@ class UserKeyMaterialResolverTest extends TestCase
     {
         $resolver = new UserKeyMaterialResolver();
 
-        $resolver->registerProvider(new class implements UserKeyMaterialProviderInterface {
+        $resolver->registerProvider(new class () implements UserKeyMaterialProviderInterface {
             public function supports(User $user): bool
             {
                 return true;

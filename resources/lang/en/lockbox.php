@@ -11,12 +11,13 @@ return [
     ],
     'buttons' => [
         'generate_key' => 'Generate Lockbox Key',
-        'set_password' => 'Set Crypto Password',
+        'save_settings' => 'Save Lockbox Settings',
     ],
     'notifications' => [
         'not_supported' => 'This user model does not implement HasLockboxKeys.',
         'key_generated' => 'Lockbox key generated successfully.',
         'password_set' => 'Crypto password set successfully.',
+        'settings_saved' => 'Lockbox settings updated.',
     ],
     'modal' => [
         'unlock_heading' => 'Unlock your Lockbox',
@@ -24,6 +25,8 @@ return [
     ],
     'form' => [
         'crypto_password' => 'Crypto Password',
+        'totp' => 'TOTP Code',
+        'provider' => 'Key Provider',
         'unlock' => 'Unlock Lockbox',
     ],
 

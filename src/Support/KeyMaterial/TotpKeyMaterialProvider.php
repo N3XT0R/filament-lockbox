@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
 
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
-use PragmaRX\Google2FA\Google2FA;
 use RuntimeException;
 
 class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
@@ -31,10 +31,10 @@ class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
             throw new RuntimeException('TOTP input is required.');
         }
 
-        $google2fa = app(Google2FA::class);
-        $secret = decrypt($user->getAppAuthenticationSecret());
+        /** @var AppAuthentication $appAuth */
+        $appAuth = app(AppAuthentication::class);
 
-        if (!$google2fa->verifyKey($secret, $input)) {
+        if (!$appAuth->verifyCode($input, $user->getAppAuthenticationSecret())) {
             throw new RuntimeException('Invalid TOTP code.');
         }
 

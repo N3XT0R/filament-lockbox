@@ -113,7 +113,7 @@ class LockboxStatusWidget extends Widget
         }
 
         if ($oldProvider !== null && $oldProvider !== $this->provider) {
-            ReencryptLockboxData::dispatch($user, $oldProvider, $this->provider);
+            $this->dispatch(new ReencryptLockboxData($user, $oldProvider, $this->provider));
         }
 
         Notification::make()

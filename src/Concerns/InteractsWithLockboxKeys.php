@@ -7,6 +7,7 @@ namespace N3XT0R\FilamentLockbox\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Random\RandomException;
 use RuntimeException;
 
 trait InteractsWithLockboxKeys
@@ -43,12 +44,14 @@ trait InteractsWithLockboxKeys
 
     /**
      * Generate a new encrypted user key if none exists.
+     * @throws RandomException
      */
     public function initializeUserKeyIfMissing(): void
     {
         $this->ensureModelContext();
 
-        if (!$this->getAttribute('encrypted_user_key')) {
+        /** @var Model $this */
+        if (null === $this->getAttribute('encrypted_user_key')) {
             $rawKey = base64_encode(random_bytes(32));
             /** @var Model $this */
             $this->setAttribute('encrypted_user_key', Crypt::encryptString($rawKey));
@@ -81,6 +84,7 @@ trait InteractsWithLockboxKeys
 
     /**
      * Ensure this trait is used within an Eloquent Model context.
+     * @throws RuntimeException
      */
     protected function ensureModelContext(): void
     {

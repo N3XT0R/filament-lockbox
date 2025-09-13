@@ -191,7 +191,7 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_filament-lockbox_table',
+            '2025_09_12_213516_add_lockbox_fields_to_users_table',
         ];
     }
 }

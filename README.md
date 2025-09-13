@@ -218,6 +218,12 @@ If you want to use WebAuthn/Passkeys for deriving Lockbox encryption keys, insta
 composer require spatie/laravel-passkeys
 ```
 
+Make sure the package is properly installed and configured according
+to [Spatie's documentation](https://github.com/spatie/laravel-passkeys).  
+A working Passkey setup is required for the `PasskeyKeyMaterialProvider` to function correctly.
+
+
+
 ---
 
 ## 📖 Roadmap

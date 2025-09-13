@@ -12,4 +12,11 @@ class Package
     {
         return InstalledVersions::isInstalled($package);
     }
+
+    public static function getVersion(string $package): ?string
+    {
+        return self::isInstalled($package)
+            ? InstalledVersions::getPrettyVersion($package)
+            : null;
+    }
 }

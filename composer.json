@@ -36,13 +36,10 @@
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^8.0",
     "orchestra/testbench": "^9.0|^10.0",
-    "pestphp/pest": "^3.0",
-    "pestphp/pest-plugin-arch": "^3.0",
-    "pestphp/pest-plugin-laravel": "^3.0",
-    "pestphp/pest-plugin-livewire": "^3.0",
     "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan-deprecation-rules": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
+    "phpunit/phpunit": "^11.5",
     "rector/rector": "^2.0",
     "spatie/laravel-ray": "^1.26"
   },
@@ -80,7 +77,7 @@
     "sort-packages": true,
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
-      "pestphp/pest-plugin": true,
+      "pestphp/pest-plugin": false,
       "phpstan/extension-installer": true
     }
   },

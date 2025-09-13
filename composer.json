@@ -1,86 +1,89 @@
 {
-  "name": "n3xt0r/filament-lockbox",
-  "description": "Filament v4 security addon to protect sensitive data with user-bound encryption keys (Split-Key, TOTP, or crypto password)",
-  "keywords": [
-    "N3XT0R",
-    "laravel",
-    "filamentphp",
-    "filament-lockbox",
-    "encryption",
-    "security",
-    "plugin",
-    "totp",
-    "2fa"
-  ],
-  "homepage": "https://github.com/n3xt0r/filament-lockbox",
-  "support": {
-    "issues": "https://github.com/n3xt0r/filament-lockbox/issues",
-    "source": "https://github.com/n3xt0r/filament-lockbox"
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Ilya Beliaev",
-      "email": "info@php-dev.info",
-      "role": "Maintainer"
-    }
-  ],
-  "require": {
-    "php": "^8.2",
-    "filament/filament": "^4.0",
-    "nesbot/carbon": "^3.8",
-    "spatie/laravel-package-tools": "^1.15.0"
-  },
-  "require-dev": {
-    "larastan/larastan": "^3.0",
-    "laravel/pint": "^1.0",
-    "nunomaduro/collision": "^8.0",
-    "orchestra/testbench": "^9.0|^10.0",
-    "phpstan/extension-installer": "^1.1",
-    "phpstan/phpstan-deprecation-rules": "^2.0",
-    "phpstan/phpstan-phpunit": "^2.0",
-    "phpunit/phpunit": "^11.5",
-    "rector/rector": "^2.0",
-    "spatie/laravel-ray": "^1.26"
-  },
-  "autoload": {
-    "psr-4": {
-      "N3XT0R\\FilamentLockbox\\": "src/",
-      "N3XT0R\\FilamentLockbox\\Database\\Factories\\": "database/factories/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "N3XT0R\\FilamentLockbox\\Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-    "analyse": "phpstan analyse",
-    "lint": "pint",
-    "refactor": "rector",
-    "test": "vendor/bin/phpunit",
-    "test:lint": "pint --test",
-    "test:refactor": "rector --dry-run"
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "N3XT0R\\FilamentLockbox\\FilamentLockboxServiceProvider"
-      ],
-      "aliases": {
-        "FilamentLockbox": "N3XT0R\\FilamentLockbox\\Facades\\FilamentLockbox"
-      }
-    }
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "composer/package-versions-deprecated": true,
-      "pestphp/pest-plugin": false,
-      "phpstan/extension-installer": true
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "n3xt0r/filament-lockbox",
+    "description": "Filament v4 security addon to protect sensitive data with user-bound encryption keys (Split-Key, TOTP, or crypto password)",
+    "keywords": [
+        "N3XT0R",
+        "laravel",
+        "filamentphp",
+        "filament-lockbox",
+        "encryption",
+        "security",
+        "plugin",
+        "totp",
+        "2fa"
+    ],
+    "homepage": "https://github.com/n3xt0r/filament-lockbox",
+    "support": {
+        "issues": "https://github.com/n3xt0r/filament-lockbox/issues",
+        "source": "https://github.com/n3xt0r/filament-lockbox"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ilya Beliaev",
+            "email": "info@php-dev.info",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^4.0",
+        "nesbot/carbon": "^3.8",
+        "spatie/laravel-package-tools": "^1.15.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^11.5",
+        "rector/rector": "^2.0",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "suggest": {
+        "marcelweidum/filament-passkeys": "Optional integration for WebAuthn/Passkeys"
+    },
+    "autoload": {
+        "psr-4": {
+            "N3XT0R\\FilamentLockbox\\": "src/",
+            "N3XT0R\\FilamentLockbox\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "N3XT0R\\FilamentLockbox\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "phpstan analyse",
+        "lint": "pint",
+        "refactor": "rector",
+        "test": "vendor/bin/phpunit",
+        "test:lint": "pint --test",
+        "test:refactor": "rector --dry-run"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "N3XT0R\\FilamentLockbox\\FilamentLockboxServiceProvider"
+            ],
+            "aliases": {
+                "FilamentLockbox": "N3XT0R\\FilamentLockbox\\Facades\\FilamentLockbox"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "pestphp/pest-plugin": false,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

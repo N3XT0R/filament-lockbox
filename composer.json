@@ -44,9 +44,6 @@
         "rector/rector": "^2.0",
         "spatie/laravel-ray": "^1.26"
     },
-    "suggest": {
-        "spatie/laravel-passkeys": "Optional: Enable WebAuthn/Passkeys as a user-bound key material provider for Filament Lockbox"
-    },
     "autoload": {
         "psr-4": {
             "N3XT0R\\FilamentLockbox\\": "src/",

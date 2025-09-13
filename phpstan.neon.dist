@@ -9,6 +9,7 @@ parameters:
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
-
+    ignoreErrors:
+        - '#Trait N3XT0R\\FilamentLockbox\\Concerns\\InteractsWithLockboxKeys is used zero times#'
 
 

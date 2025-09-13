@@ -212,16 +212,11 @@ $form
 
 ### 🔑 Optional Integration: Passkeys
 
-If you want to use WebAuthn/Passkeys for deriving Lockbox encryption keys, install:
+This package ships with built-in support for [spatie/laravel-passkeys](https://github.com/spatie/laravel-passkeys) and
+installs it by default.
 
-```bash
-composer require spatie/laravel-passkeys
-```
-
-Make sure the package is properly installed and configured according
-to [Spatie's documentation](https://github.com/spatie/laravel-passkeys).  
-A working Passkey setup is required for the `PasskeyKeyMaterialProvider` to function correctly.
-
+Whether Passkeys are used or not can be controlled via this package's configuration.
+If you don't plan to use WebAuthn/Passkeys, you can disable the integration in `config/filament-lockbox.php`.
 
 
 ---

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3XT0R\FilamentLockbox\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
@@ -16,10 +18,10 @@ use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\LivewireServiceProvider;
+use N3XT0R\FilamentLockbox\FilamentLockboxServiceProvider;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use N3XT0R\FilamentLockbox\FilamentLockboxServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -31,7 +33,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'N3XT0R\\FilamentLockbox\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'N3XT0R\\FilamentLockbox\\Database\\Factories\\' . class_basename($modelName) . 'Factory',
         );
     }
 

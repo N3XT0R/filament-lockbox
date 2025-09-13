@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use N3XT0R\FilamentLockbox\Support\KeyMaterial\PasskeyKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
 return [
@@ -22,13 +23,12 @@ return [
 
     'providers' => [
         TotpKeyMaterialProvider::class,
+        PasskeyKeyMaterialProvider::class,
     ],
-
 
     'passkeys' => [
         'session_flag' => 'lockbox_passkey_verified',
         // optional TTL in seconds for requiring re-unlock after some time, implement as needed:
         'ttl' => 900,
-
     ],
 ];

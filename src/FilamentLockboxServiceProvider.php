@@ -19,7 +19,6 @@ use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
 use N3XT0R\FilamentLockbox\Listeners\SetLockboxPasskeyFlag;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\PasskeyKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -125,19 +124,13 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
             // Always register fallback provider
             $resolver->registerProvider(new CryptoPasswordKeyMaterialProvider());
 
-            if (Support\Composer\Package::isInstalled('spatie/laravel-passkeys')) {
-                $resolver->registerProvider(new PasskeyKeyMaterialProvider());
-            }
-
             return $resolver;
         });
 
-        if (Support\Composer\Package::isInstalled('spatie/laravel-passkeys')) {
-            Event::listen(
-                PasskeyUsedToAuthenticateEvent::class,
-                SetLockboxPasskeyFlag::class,
-            );
-        }
+        Event::listen(
+            PasskeyUsedToAuthenticateEvent::class,
+            SetLockboxPasskeyFlag::class,
+        );
 
     }
 

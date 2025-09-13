@@ -210,6 +210,13 @@ $form
 
 ---
 
+### 🔑 Optional Integrations
+
+- **[marcelweidum/filament-passkeys](https://github.com/marcelweidum/filament-passkeys)**  
+  Add WebAuthn/Passkeys support as an additional key material provider for Filament Lockbox.
+
+---
+
 ## 📖 Roadmap
 
 - [ ] Textarea and file encryption support

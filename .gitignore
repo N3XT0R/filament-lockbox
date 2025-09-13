@@ -5,6 +5,5 @@
 .vscode
 build
 coverage
-docs
 node_modules
 vendor

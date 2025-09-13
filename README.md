@@ -1,5 +1,7 @@
 # Filament Lockbox
 
+![Filament Lockbox Logo](art/lockbox-logo.png)
+
 **Secure per-user field encryption for Filament v4.**  
 This package allows you to encrypt and decrypt sensitive data on a per-user basis, using a split-key approach:
 

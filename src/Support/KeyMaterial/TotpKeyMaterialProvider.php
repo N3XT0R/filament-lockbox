@@ -19,10 +19,22 @@ class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
 
     public function provide(User $user, ?string $input): string
     {
+        if (!$user instanceof HasAppAuthentication) {
+            throw new RuntimeException(sprintf(
+                'Model %s must implement %s to use TotpKeyMaterialProvider.',
+                $user::class,
+                HasAppAuthentication::class,
+            ));
+        }
+
+        if ($input === null || $input === '') {
+            throw new RuntimeException('TOTP input is required.');
+        }
+
         $google2fa = app(Google2FA::class);
         $secret = decrypt($user->getAppAuthenticationSecret());
 
-        if (!$google2fa->verifyKey($secret, (string)$input)) {
+        if (!$google2fa->verifyKey($secret, $input)) {
             throw new RuntimeException('Invalid TOTP code.');
         }
 

@@ -40,6 +40,8 @@ exclude_patterns = [
   "**/templates/**",
   "**/testdata/**",
   "**/vendor/**",
+  ".github/workflows/**",
+  "resources/js/**",
 ]
 
 test_patterns = [
@@ -85,6 +87,10 @@ name = "phpstan"
 
 [[plugin]]
 name = "prettier"
+exclude_patterns = [
+  ".github/workflows/**",
+  "resources/js/**"
+]
 
 [[plugin]]
 name = "radarlint-iac"

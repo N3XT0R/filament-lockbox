@@ -41,6 +41,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^11.5",
         "rector/rector": "^2.0",
+        "spatie/laravel-passkeys": "^1.0",
         "spatie/laravel-ray": "^1.26"
     },
     "suggest": {

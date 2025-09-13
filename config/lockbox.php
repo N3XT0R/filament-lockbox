@@ -23,4 +23,12 @@ return [
     'providers' => [
         TotpKeyMaterialProvider::class,
     ],
+
+
+    'passkeys' => [
+        'session_flag' => 'lockbox_passkey_verified',
+        // optional TTL in seconds for requiring re-unlock after some time, implement as needed:
+        'ttl' => 900,
+
+    ],
 ];

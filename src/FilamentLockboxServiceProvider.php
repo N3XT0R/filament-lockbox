@@ -13,15 +13,18 @@ use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Event;
 use Livewire\Features\SupportTesting\Testable;
 use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
+use N3XT0R\FilamentLockbox\Listeners\SetLockboxPasskeyFlag;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPasskeys\Events\PasskeyUsedToAuthenticateEvent;
 
 class FilamentLockboxServiceProvider extends PackageServiceProvider
 {
@@ -123,6 +126,11 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
 
             return $resolver;
         });
+
+        Event::listen(
+            PasskeyUsedToAuthenticateEvent::class,
+            SetLockboxPasskeyFlag::class,
+        );
     }
 
     protected function getAssetPackageName(): ?string

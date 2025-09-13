@@ -32,7 +32,7 @@ class UnlockLockboxAction extends Action
         $this->label(__('filament-lockbox::lockbox.buttons.unlock'))
             ->modalHeading(__('filament-lockbox::lockbox.modal.unlock_heading'))
             ->modalDescription(__('filament-lockbox::lockbox.modal.unlock_description'))
-            ->form([
+            ->schema([
                 TextInput::make('lockbox_input')
                     ->password()
                     ->label(__('filament-lockbox::lockbox.form.crypto_password'))

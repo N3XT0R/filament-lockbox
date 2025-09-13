@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Forms\Components;
 
 use Filament\Forms\Components\TextInput;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Support\LockboxManager;
 
 class EncryptedTextInput extends TextInput
@@ -28,7 +30,11 @@ class EncryptedTextInput extends TextInput
 
             /** @var LockboxManager $manager */
             $manager = app(LockboxManager::class);
-            $encrypter = $manager->forUser(auth()->user(), request('lockbox_input'));
+            /**
+             * @var Authenticatable&User $user
+             */
+            $user = auth()->user();
+            $encrypter = $manager->forUser($user, request('lockbox_input'));
 
             return $encrypter->encryptString($state);
         });

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3XT0R\FilamentLockbox;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use N3XT0R\FilamentLockbox\Widgets\LockboxStatusWidget;
 
 class FilamentLockboxPlugin implements Plugin
 {
@@ -14,7 +17,11 @@ class FilamentLockboxPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        if (config('filament-lockbox.show_widget', true)) {
+            $panel->widgets([
+                LockboxStatusWidget::class,
+            ]);
+        }
     }
 
     public function boot(Panel $panel): void

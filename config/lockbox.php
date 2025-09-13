@@ -6,6 +6,7 @@ use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
 return [
+    'show_widget' => true, // set to false if you don't want the status widget auto-added
 
     /*
     |--------------------------------------------------------------------------

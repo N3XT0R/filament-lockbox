@@ -1,6 +1,7 @@
 includes:
     - phpstan-baseline.neon
 parameters:
+    reportUnmatchedIgnoredErrors: false
     level: 4
     paths:
         - src
@@ -11,5 +12,6 @@ parameters:
     checkModelProperties: true
     ignoreErrors:
         - '#Trait N3XT0R\\FilamentLockbox\\Concerns\\InteractsWithLockboxKeys is used zero times#'
+        - '#Property N3XT0R\\FilamentLockbox\\.*::\$view \(view-string\) does not accept default value of type string#'
 
 

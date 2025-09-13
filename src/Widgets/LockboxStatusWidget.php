@@ -15,6 +15,7 @@ use N3XT0R\FilamentLockbox\Jobs\ReencryptLockboxData;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
+/** @property view-string $view */
 class LockboxStatusWidget extends Widget
 {
     /**

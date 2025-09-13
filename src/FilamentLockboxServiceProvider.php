@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox;
 
+use Filament\Facades\Filament;
 use Filament\Forms\FormsComponent;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;

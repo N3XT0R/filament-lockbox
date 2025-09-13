@@ -30,4 +30,6 @@ interface HasLockboxKeys
      * Generate and set a fresh user key if none exists.
      */
     public function initializeUserKeyIfMissing(): void;
+
+    public function setCryptoPassword(string $plainPassword): void;
 }

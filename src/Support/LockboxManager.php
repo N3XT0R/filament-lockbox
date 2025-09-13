@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Support;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Crypt;
@@ -35,7 +34,7 @@ class LockboxManager
         $partB = $materialResolver->resolve($user, $input);
 
         // Derive final key from partA and partB
-        $finalKey = hash('sha256', $partA . $partB, true);
+        $finalKey = hash_hkdf('sha256', $partA . $partB, 32, 'filament-lockbox');
 
         return new Encrypter($finalKey, config('app.cipher'));
     }

@@ -41,7 +41,7 @@ class PasskeyKeyMaterialProvider implements UserKeyMaterialProviderInterface
         }
 
         /**
-         * @var Passkey $passkey
+         * @var Passkey|null $passkey
          */
         $passkey = $user->passkeys()->find($passkeyId);
         if (!$passkey) {

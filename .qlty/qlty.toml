@@ -40,7 +40,7 @@ exclude_patterns = [
   "**/templates/**",
   "**/testdata/**",
   "**/vendor/**",
-  ".github/workflows/**",
+  ".github/**",
   "resources/js/**",
 ]
 

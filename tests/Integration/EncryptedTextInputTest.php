@@ -6,16 +6,18 @@ namespace N3XT0R\FilamentLockbox\Tests\Integration;
 
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Support\Facades\Crypt;
+use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockbox;
+use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
+use N3XT0R\FilamentLockbox\Support\LockboxService;
 use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class EncryptedTextInputTest extends TestCase
 {
-    public function testDehydrateEncryptsStateWithProvidedInput(): void
+    public function testPersistsAndRetrievesViaLockboxService(): void
     {
         $provider = new class () implements UserKeyMaterialProviderInterface {
             public function supports(BaseUser $user): bool
@@ -33,7 +35,10 @@ class EncryptedTextInputTest extends TestCase
 
         config(['app.key' => 'base64:' . base64_encode(random_bytes(32))]);
 
-        $user = new class () extends BaseUser implements HasLockboxKeys {
+        $user = new class () extends BaseUser implements HasLockboxKeys, HasLockbox {
+            use InteractsWithLockbox;
+            protected $guarded = [];
+            protected $table = 'users';
             public ?string $encryptedUserKey;
             public string $providerClass;
 
@@ -82,16 +87,41 @@ class EncryptedTextInputTest extends TestCase
         };
 
         $user->providerClass = $provider::class;
+        $user->forceFill([
+            'name' => 'Test',
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
+        ])->save();
 
         $this->actingAs($user);
 
-        $component = EncryptedTextInput::make('secret')->setLockboxInput('input-secret');
+        $livewire = new class () extends \Livewire\Component implements \Filament\Schemas\Contracts\HasSchemas {
+            use \Filament\Schemas\Concerns\InteractsWithSchemas;
 
-        $encrypted = (\invade($component)->dehydrateStateUsing)('plain-value');
+            public function getSchemas(): array
+            {
+                return [];
+            }
+        };
 
-        $manager = app(LockboxManager::class);
-        $encrypter = $manager->forUser($user, 'input-secret');
+        $component = EncryptedTextInput::make('secret')
+            ->model($user)
+            ->setLockboxInput('input-secret');
+        $component->container(\Filament\Schemas\Schema::make($livewire));
+        $component->state('plain-value');
+        $save = \invade($component)->saveRelationshipsUsing;
+        $save($component);
 
-        $this->assertSame('plain-value', $encrypter->decryptString($encrypted));
+        $service = app(LockboxService::class);
+        $retrieved = $service->get($user, 'secret', $user, 'input-secret');
+        $this->assertSame('plain-value', $retrieved);
+
+        $component2 = EncryptedTextInput::make('secret')
+            ->model($user)
+            ->setLockboxInput('input-secret');
+        $component2->container(\Filament\Schemas\Schema::make($livewire));
+        $hydrate = \invade($component2)->afterStateHydrated;
+        $hydrate($component2);
+        $this->assertSame('plain-value', $component2->getState());
     }
 }

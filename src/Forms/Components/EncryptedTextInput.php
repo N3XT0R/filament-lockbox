@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Forms\Components;
 
 use Filament\Forms\Components\TextInput;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;

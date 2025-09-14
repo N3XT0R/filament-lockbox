@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Forms\Components;
 
 use Filament\Forms\Components\Field;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\HtmlString;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;

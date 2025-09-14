@@ -125,4 +125,3 @@ class EncryptedTextInputTest extends TestCase
         $this->assertSame('plain-value', $component2->getState());
     }
 }
-

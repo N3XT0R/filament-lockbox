@@ -120,4 +120,3 @@ class DecryptedTextDisplayTest extends TestCase
         $this->assertSame('plain-value', (string) $state);
     }
 }
-

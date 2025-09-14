@@ -99,7 +99,7 @@ class AdminPanelProvider extends PanelProvider
 Optional configuration:
 
 ```php
-// config/filament-lockbox.php
+// config/filament-filament-lockbox.php
 return [
     'show_widget' => true, // set false to hide the status widget
     'providers' => [

@@ -192,6 +192,7 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     {
         return [
             '2025_09_12_213516_add_lockbox_fields_to_users_table',
+            '2025_09_12_213517_create_lockbox_table',
         ];
     }
 }

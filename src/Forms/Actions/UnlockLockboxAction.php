@@ -8,14 +8,20 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 
 /**
- * Opens a modal to collect the user's Lockbox secret (crypto password or TOTP).
- * The provided value is merged into the current request as "lockbox_input",
- * so any EncryptedTextInput can read it during dehydration.
+ * Action to prompt the user for lockbox secret input.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class UnlockLockboxAction extends Action
 {
     /**
-     * Provide a sane default name so developers can simply call `UnlockLockboxAction::make()`.
+     * Provide a sane default name so developers can simply call `make()`.
+     *
+     * @return string|null Default name
      */
     public static function getDefaultName(): ?string
     {
@@ -24,6 +30,8 @@ class UnlockLockboxAction extends Action
 
     /**
      * Configure the action: modal, form schema, and behavior.
+     *
+     * @return void
      */
     protected function setUp(): void
     {

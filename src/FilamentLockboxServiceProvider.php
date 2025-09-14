@@ -26,12 +26,28 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\LaravelPasskeys\Events\PasskeyUsedToAuthenticateEvent;
 
+/**
+ * Service provider for the Filament Lockbox package.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
+ */
 class FilamentLockboxServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-lockbox';
 
     public static string $viewNamespace = 'filament-lockbox';
 
+    /**
+     * Configure package assets, commands, and resources.
+     *
+     * @param Package $package Package instance to configure
+     *
+     * @return void
+     */
     public function configurePackage(Package $package): void
     {
         /*
@@ -68,10 +84,20 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
         }
     }
 
+    /**
+     * Execute actions after the package is registered.
+     *
+     * @return void
+     */
     public function packageRegistered(): void
     {
     }
 
+    /**
+     * Boot the package services.
+     *
+     * @return void
+     */
     public function packageBooted(): void
     {
         // Asset Registration
@@ -103,6 +129,11 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
         $this->registerSingletons();
     }
 
+    /**
+     * Register form components and macros.
+     *
+     * @return void
+     */
     protected function registerComponents(): void
     {
         // Register a macro for convenient usage in Filament forms
@@ -111,6 +142,11 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
         });
     }
 
+    /**
+     * Register container singletons and event listeners.
+     *
+     * @return void
+     */
     protected function registerSingletons(): void
     {
         $this->app->singleton(UserKeyMaterialResolver::class, function () {
@@ -134,13 +170,20 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
 
     }
 
+    /**
+     * Get the package name used for asset registration.
+     *
+     * @return string|null Asset package name
+     */
     protected function getAssetPackageName(): ?string
     {
         return 'n3xt0r/filament-lockbox';
     }
 
     /**
-     * @return array<Asset>
+     * Get assets to register with Filament.
+     *
+     * @return array<Asset> Asset definitions
      */
     protected function getAssets(): array
     {
@@ -152,7 +195,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<class-string>
+     * Get the package's console commands.
+     *
+     * @return array<class-string> Command class names
      */
     protected function getCommands(): array
     {
@@ -162,7 +207,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<string>
+     * Get icon definitions to register.
+     *
+     * @return array<string> Icon mappings
      */
     protected function getIcons(): array
     {
@@ -170,7 +217,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<string>
+     * Get additional route files to include.
+     *
+     * @return array<string> Route file paths
      */
     protected function getRoutes(): array
     {
@@ -178,7 +227,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<string, mixed>
+     * Get script data to expose to the front end.
+     *
+     * @return array<string, mixed> Data key-value pairs
      */
     protected function getScriptData(): array
     {
@@ -186,7 +237,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<string>
+     * Get migration file names for installation.
+     *
+     * @return array<string> Migration file names
      */
     protected function getMigrations(): array
     {

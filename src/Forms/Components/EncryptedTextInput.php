@@ -14,6 +14,12 @@ use RuntimeException;
 /**
  * Text input that stores its value encrypted using a per-user key.
  * It masks hydrated values and encrypts on dehydration.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class EncryptedTextInput extends TextInput
 {
@@ -22,6 +28,13 @@ class EncryptedTextInput extends TextInput
      */
     protected ?string $lockboxInput = null;
 
+    /**
+     * Set the lockbox secret used for encryption.
+     *
+     * @param string $input Secret provided by the user
+     *
+     * @return static
+     */
     public function setLockboxInput(string $input): static
     {
         $this->lockboxInput = $input;
@@ -29,6 +42,11 @@ class EncryptedTextInput extends TextInput
         return $this;
     }
 
+    /**
+     * Configure component behavior for handling encrypted state.
+     *
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();

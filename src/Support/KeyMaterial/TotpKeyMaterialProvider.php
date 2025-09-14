@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Key material provider that validates a TOTP code from the user.
- */
-
 declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
@@ -15,22 +11,38 @@ use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use RuntimeException;
 
 /**
- * Generates key material using a time-based one-time password (TOTP).
+ * Generates key material using a time-based one-time password.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
 {
     /**
      * Determine if the user has TOTP authentication enabled.
+     *
+     * @param User $user User to check
+     *
+     * @return bool True if TOTP is configured, false otherwise
      */
     public function supports(User $user): bool
     {
-        return $user instanceof HasAppAuthentication && !empty($user->getAppAuthenticationSecret());
+        return $user instanceof HasAppAuthentication
+            && !empty($user->getAppAuthenticationSecret());
     }
 
     /**
-     * Return key material after verifying the provided TOTP code.
+     * Verify the TOTP code and return derived key material.
      *
-     * @throws RuntimeException when verification fails
+     * @param User        $user  User attempting authentication
+     * @param string|null $input TOTP code input
+     *
+     * @throws RuntimeException When verification fails
+     *
+     * @return string Derived key material
      */
     public function provide(User $user, ?string $input): string
     {

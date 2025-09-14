@@ -13,6 +13,12 @@ use N3XT0R\FilamentLockbox\Support\LockboxManager;
 
 /**
  * Displays decrypted value of a field stored with EncryptedTextInput.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class DecryptedTextDisplay extends Field
 {
@@ -23,6 +29,13 @@ class DecryptedTextDisplay extends Field
      */
     protected ?string $lockboxInput = null;
 
+    /**
+     * Set the lockbox input used for decryption.
+     *
+     * @param string|null $input Secret provided by the user
+     *
+     * @return static
+     */
     public function setLockboxInput(?string $input): static
     {
         $this->lockboxInput = $input;
@@ -30,6 +43,11 @@ class DecryptedTextDisplay extends Field
         return $this;
     }
 
+    /**
+     * Configure component behavior for decrypting values.
+     *
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();

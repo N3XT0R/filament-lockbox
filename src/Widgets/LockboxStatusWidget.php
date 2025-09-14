@@ -15,6 +15,15 @@ use N3XT0R\FilamentLockbox\Jobs\ReencryptLockboxData;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
 
+/**
+ * Widget for managing lockbox configuration in Filament.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
+ */
 class LockboxStatusWidget extends Widget
 {
     /**
@@ -28,6 +37,11 @@ class LockboxStatusWidget extends Widget
 
     public bool $supportsLockbox = false;
 
+    /**
+     * Initialize widget state and detect lockbox support.
+     *
+     * @return void
+     */
     public function mount(): void
     {
         $user = Auth::user();
@@ -38,6 +52,11 @@ class LockboxStatusWidget extends Widget
         }
     }
 
+    /**
+     * Build the form schema for lockbox settings.
+     *
+     * @return array<int, mixed> Form component definitions
+     */
     public function getFormSchema(): array
     {
         if (!$this->supportsLockbox) {
@@ -61,6 +80,11 @@ class LockboxStatusWidget extends Widget
         ];
     }
 
+    /**
+     * Generate a new user key if missing.
+     *
+     * @return void
+     */
     public function generateKey(): void
     {
         if (!$this->supportsLockbox) {
@@ -86,6 +110,11 @@ class LockboxStatusWidget extends Widget
         $this->dispatch('$refresh');
     }
 
+    /**
+     * Save lockbox settings and re-encrypt data if needed.
+     *
+     * @return void
+     */
     public function saveSettings(): void
     {
         if (!$this->supportsLockbox) {
@@ -128,6 +157,11 @@ class LockboxStatusWidget extends Widget
         $this->totpCode = null;
     }
 
+    /**
+     * Retrieve available key material provider classes.
+     *
+     * @return array<string, string> Mapping of class names to labels
+     */
     protected function getProviderOptions(): array
     {
         $providers = config('filament-lockbox.providers', []);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User;
 
 /**
- * @property int $user_id
+ * @property int    $user_id
  * @property string $name
  * @property string $value
  */

@@ -12,10 +12,16 @@
 This package allows you to encrypt and decrypt sensitive data on a per-user basis, using a split-key approach:
 
 - **Part A** (server-side key) is stored encrypted in the database.
-- **Part B** (user-provided secret) is collected at runtime (crypto password or TOTP).
+- **Part B** (user-provided secret) is collected at runtime (crypto password, passkey, or TOTP).
 - **Final key** is derived from PartA + PartB using `hash('sha256', ...)`.
 
 This ensures that **even administrators cannot decrypt data** without the user-provided input.
+
+---
+
+## 🚧 Project Status
+
+This package is currently in **alpha** and under active development. Features and APIs may change before a stable release.
 
 ---
 
@@ -25,11 +31,12 @@ This ensures that **even administrators cannot decrypt data** without the user-p
 - 🧩 **Plug-and-play Filament components**:
     - `EncryptedTextInput` → encrypts before save
     - `DecryptedTextDisplay` → decrypts on display
-    - `UnlockLockboxAction` → prompts for crypto password/TOTP
+    - `UnlockLockboxAction` → prompts for crypto password or TOTP
 - 🔒 **User-configurable crypto password support**
+- 🗝️ **Passkey (WebAuthn) support** if your user implements `HasPasskeys`
 - 🔐 **TOTP support** if your user implements `HasAppAuthentication`
 - 🛡️ **Zero-knowledge for admins** – data is unreadable without user input
-- ⚙️ **Configurable key material providers** (PBKDF2, TOTP, custom)
+- ⚙️ **Configurable key material providers** (PBKDF2, Passkeys, TOTP, custom)
 
 ---
 
@@ -47,7 +54,7 @@ This ensures that **even administrators cannot decrypt data** without the user-p
                        │
                        │
            ┌───────────▼───────────┐
-           │  Part B (User Input) │  ← crypto password or TOTP
+           │  Part B (User Input) │  ← crypto password, passkey, or TOTP
            └───────────┬──────────┘
                        │ combine
                        ▼
@@ -174,7 +181,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
 
 1. Go to the **Lockbox widget** in your Filament panel.
 2. Click **Generate Lockbox Key**.
-3. Set a **crypto password** (or enable TOTP).
+3. Set a **crypto password**, register a **passkey**, or enable **TOTP**.
 4. Unlock once per session to access or modify encrypted fields.
 
 ---
@@ -224,13 +231,13 @@ $form
 
 ---
 
-### 🔑 Optional Integration: Passkeys
+### 🔑 Passkeys (WebAuthn)
 
 This package ships with built-in support for [spatie/laravel-passkeys](https://github.com/spatie/laravel-passkeys) and
-installs it by default.
+requires it by default.
 
-Whether Passkeys are used or not can be controlled via this package's configuration.
-If you don't plan to use WebAuthn/Passkeys, you can disable the integration in `config/filament-lockbox.php`.
+You can control Passkey usage via this package's configuration.
+If you don't plan to use WebAuthn/Passkeys, disable the integration in `config/filament-lockbox.php`.
 
 
 ---

@@ -7,6 +7,7 @@ namespace N3XT0R\FilamentLockbox\Support;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
+use N3XT0R\FilamentLockbox\Models\Lockbox;
 
 /**
  * Service for storing and retrieving lockbox values.
@@ -31,9 +32,9 @@ class LockboxService
      */
     public function set(
         Model&HasLockbox $lockboxable,
-        string $name,
-        string $value,
-        User $user,
+        string           $name,
+        string           $value,
+        User             $user,
     ): void {
         $encrypter = app(LockboxManager::class)->forUser($user);
 
@@ -54,10 +55,10 @@ class LockboxService
      */
     public function get(
         Model&HasLockbox $lockboxable,
-        string $name,
-        User $user,
+        string           $name,
+        User             $user,
     ): ?string {
-        /** @var \\N3XT0R\\FilamentLockbox\\Models\\Lockbox|null $record */
+        /** @var Lockbox|null $record */
         $record = $lockboxable->lockbox()
             ->where('name', $name)
             ->where('user_id', $user->getKey())
@@ -69,6 +70,6 @@ class LockboxService
 
         $encrypter = app(LockboxManager::class)->forUser($user);
 
-        return $encrypter->decrypt($record->value);
+        return $encrypter->decrypt($record->getAttribute('value'));
     }
 }

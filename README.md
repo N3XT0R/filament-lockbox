@@ -72,23 +72,18 @@ Install the package via Composer:
 composer require n3xt0r/filament-lockbox
 ```
 
+> **Important:**  
+> This package integrates with [`spatie/laravel-passkeys`](https://github.com/spatie/laravel-passkeys).
+> Before running the install command, make sure you have published and run the Spatie migrations:
+
+```bash
+php artisan vendor:publish --provider="Spatie\\LaravelPasskeys\\LaravelPasskeysServiceProvider" --tag="laravel-passkeys-migrations"
+php artisan migrate
 Run the install command to publish all required assets and migrations:
 
 ```bash
 php artisan filament-lockbox:install
 ```
-
-This will:
-
-- Publish this package's configuration, translations, and migrations.
-- **Publish the migrations from [`spatie/laravel-passkeys`](https://github.com/spatie/laravel-passkeys)** automatically,
-  if they haven't been published yet.
-- Ask you whether to run `php artisan migrate`.
-
-> **Note:**  
-> If you have already published or customized the `create_passkeys_table` migration,
-> the installer will detect this and skip publishing a duplicate.  
-> This prevents overwriting any existing changes in your project.
 
 ---
 

@@ -47,8 +47,13 @@ class LockboxStatusWidget extends Widget implements HasForms
             $this->provider = $user->getLockboxProvider();
         }
 
-        // Initialize the form state with current property values
-        $this->form->fill();
+        $this->resetState();
+    }
+
+    protected function resetState(): void
+    {
+        $this->cryptoPassword = null;
+        $this->totpCode = null;
     }
 
     /**
@@ -149,10 +154,7 @@ class LockboxStatusWidget extends Widget implements HasForms
             ->success()
             ->send();
 
-        $this->cryptoPassword = null;
-        $this->totpCode = null;
-
-        $this->form->fill();
+        $this->resetState();
     }
 
     /**

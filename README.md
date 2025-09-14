@@ -68,7 +68,7 @@ This means **database leaks alone cannot decrypt your data** – PartB must be p
 
 ```bash
 composer require n3xt0r/filament-lockbox
-php artisan migrate
+php artisan filament-lockbox:install
 ```
 
 ---

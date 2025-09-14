@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `DecryptedTextDisplay` – decrypts values for display (requires unlock)
     - `UnlockLockboxAction` – modal for entering crypto password/TOTP
 - Crypto Password Support: Per-user password hashing & PBKDF2 key derivation
+- Passkey Support: Built-in integration with `spatie/laravel-passkeys`
 - TOTP Support: Key material provider that validates Google Authenticator codes
 - Model Integration: `HasLockboxKeys` interface & `InteractsWithLockboxKeys` trait
 - Filament Plugin: `FilamentLockboxPlugin` with optional status widget

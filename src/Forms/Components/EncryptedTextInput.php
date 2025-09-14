@@ -65,20 +65,9 @@ class EncryptedTextInput extends TextInput
             /** @var Authenticatable&User|null $user */
             $user = auth()->user();
 
-            if (!$user instanceof HasLockboxKeys) {
-                throw new RuntimeException(sprintf(
-                    'Model %s must implement %s to use EncryptedTextInput.',
-                    $user ? $user::class : 'null',
-                    HasLockboxKeys::class,
-                ));
-            }
+            $service = app(LockboxService::class);
 
-            $exists = $record->lockbox()
-                ->where('name', $component->getName())
-                ->where('user_id', $user->getKey())
-                ->exists();
-
-            if (!$exists) {
+            if (!$service->exists($record, $component->getName(), $user)) {
                 return;
             }
 
@@ -91,7 +80,6 @@ class EncryptedTextInput extends TextInput
             }
 
             try {
-                $service = app(LockboxService::class);
                 $value = $service->get($record, $component->getName(), $user, $input);
 
                 if ($value !== null) {

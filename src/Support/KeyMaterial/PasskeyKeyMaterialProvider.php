@@ -1,4 +1,7 @@
 <?php
+/**
+ * Key material provider that derives encryption material from a user's passkey.
+ */
 
 declare(strict_types=1);
 
@@ -10,13 +13,24 @@ use RuntimeException;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Passkey;
 
+/**
+ * Provides key material based on verified passkey credentials.
+ */
 class PasskeyKeyMaterialProvider implements UserKeyMaterialProviderInterface
 {
+    /**
+     * Determine if the user supports passkey-based key material.
+     */
     public function supports(User $user): bool
     {
         return $user instanceof HasPasskeys;
     }
 
+    /**
+     * Return deterministic key material derived from the authenticated passkey.
+     *
+     * @throws RuntimeException when passkey data is missing or invalid
+     */
     public function provide(User $user, ?string $input): string
     {
         if (!$this->supports($user)) {

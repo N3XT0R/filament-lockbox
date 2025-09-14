@@ -26,17 +26,18 @@
             @endif
 
             @if ($supportsLockbox)
-                <x-filament::form wire:submit="saveSettings">
-                    <x-filament::grid>
-                        @foreach ($this->getFormSchema() as $field)
-                            {{ $field }}
-                        @endforeach
-                    </x-filament::grid>
+                <div>
+                    <form wire:submit="saveSettings" class="space-y-4">
+                        {{ $this->form }}
 
-                    <x-filament::button type="submit" color="primary">
-                        {{ __('filament-lockbox::lockbox.buttons.save_settings') }}
-                    </x-filament::button>
-                </x-filament::form>
+                        <x-filament::button type="submit" color="primary">
+                            {{ __('filament-lockbox::lockbox.buttons.save_settings') }}
+                        </x-filament::button>
+                    </form>
+
+                    {{-- Filament Actions brauchen dieses Modal-Mounting --}}
+                    <x-filament-actions::modals />
+                </div>
             @endif
         </div>
     </x-filament::section>

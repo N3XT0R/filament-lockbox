@@ -27,6 +27,7 @@ class LockboxService
      * @param string           $name        Lockbox item name
      * @param string           $value       Plain text value to encrypt
      * @param User             $user        User owning the data
+     * @param string|null      $input       Optional user-provided secret
      *
      * @return void
      */
@@ -35,8 +36,9 @@ class LockboxService
         string           $name,
         string           $value,
         User             $user,
+        ?string          $input = null,
     ): void {
-        $encrypter = app(LockboxManager::class)->forUser($user);
+        $encrypter = app(LockboxManager::class)->forUser($user, $input);
 
         $lockboxable->lockbox()->updateOrCreate(
             ['name' => $name, 'user_id' => $user->getKey()],
@@ -50,6 +52,7 @@ class LockboxService
      * @param Model&HasLockbox $lockboxable Model implementing lockbox relation
      * @param string           $name        Lockbox item name
      * @param User             $user        User owning the data
+     * @param string|null      $input       Optional user-provided secret
      *
      * @return string|null Decrypted value or null when missing
      */
@@ -57,6 +60,7 @@ class LockboxService
         Model&HasLockbox $lockboxable,
         string           $name,
         User             $user,
+        ?string          $input = null,
     ): ?string {
         /** @var Lockbox|null $record */
         $record = $lockboxable->lockbox()
@@ -68,7 +72,7 @@ class LockboxService
             return null;
         }
 
-        $encrypter = app(LockboxManager::class)->forUser($user);
+        $encrypter = app(LockboxManager::class)->forUser($user, $input);
 
         return $encrypter->decrypt($record->getAttribute('value'));
     }

@@ -8,8 +8,9 @@ use Filament\Forms\Components\Field;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\HtmlString;
+use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
+use N3XT0R\FilamentLockbox\Support\LockboxService;
 
 /**
  * Displays decrypted value of a field stored with EncryptedTextInput.
@@ -52,14 +53,16 @@ class DecryptedTextDisplay extends Field
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (DecryptedTextDisplay $component, $state): void {
-            if ($state === null || $state === '') {
+        $this->afterStateHydrated(function (DecryptedTextDisplay $component): void {
+            $record = $component->getRecord();
+
+            if (!$record instanceof HasLockbox) {
                 $component->state(new HtmlString('<span class="text-gray-400">—</span>'));
 
                 return;
             }
 
-            /** * @var Authenticatable&User $user */
+            /** @var Authenticatable&User|null $user */
             $user = auth()->user();
 
             if (!$user instanceof HasLockboxKeys) {
@@ -81,11 +84,14 @@ class DecryptedTextDisplay extends Field
             }
 
             try {
-                /** @var LockboxManager $manager */
-                $manager = app(LockboxManager::class);
-                $encrypter = $manager->forUser($user, $input);
+                $service = app(LockboxService::class);
+                $decrypted = $service->get($record, $component->getName(), $user, $input);
 
-                $decrypted = $encrypter->decryptString($state);
+                if ($decrypted === null || $decrypted === '') {
+                    $component->state(new HtmlString('<span class="text-gray-400">—</span>'));
+
+                    return;
+                }
 
                 $component->state(new HtmlString(e($decrypted)));
             } catch (\Throwable $e) {

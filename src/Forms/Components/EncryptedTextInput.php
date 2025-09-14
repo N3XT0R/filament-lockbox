@@ -7,8 +7,9 @@ namespace N3XT0R\FilamentLockbox\Forms\Components;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User;
+use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
+use N3XT0R\FilamentLockbox\Support\LockboxService;
 use RuntimeException;
 
 /**
@@ -51,20 +52,17 @@ class EncryptedTextInput extends TextInput
     {
         parent::setUp();
 
-        // Mask state when loading form
-        $this->afterStateHydrated(function (EncryptedTextInput $component, $state): void {
-            if (!empty($state)) {
-                $component->state('••••••');
-            }
-        });
+        $this->dehydrated(false);
 
-        // Encrypt state before saving to database
-        $this->dehydrateStateUsing(function (?string $state): ?string {
-            if ($state === null || $state === '') {
-                return $state;
+        // Load value from lockbox
+        $this->afterStateHydrated(function (EncryptedTextInput $component): void {
+            $record = $component->getRecord();
+
+            if (!$record instanceof HasLockbox) {
+                return;
             }
 
-            /** * @var Authenticatable&User $user */
+            /** @var Authenticatable&User|null $user */
             $user = auth()->user();
 
             if (!$user instanceof HasLockboxKeys) {
@@ -75,19 +73,69 @@ class EncryptedTextInput extends TextInput
                 ));
             }
 
-            // Prefer a programmatically set value; otherwise use the request payload
+            $exists = $record->lockbox()
+                ->where('name', $component->getName())
+                ->where('user_id', $user->getKey())
+                ->exists();
+
+            if (!$exists) {
+                return;
+            }
+
             $input = $this->lockboxInput ?? (string)request('lockbox_input', '');
 
             if ($input === '') {
-                // No secret provided – let the UI handle prompting (e.g., via UnlockLockboxAction)
-                return null;
+                $component->state('••••••');
+
+                return;
             }
 
-            /** @var LockboxManager $manager */
-            $manager = app(LockboxManager::class);
-            $encrypter = $manager->forUser($user, $input);
+            try {
+                $service = app(LockboxService::class);
+                $value = $service->get($record, $component->getName(), $user, $input);
 
-            return $encrypter->encryptString($state);
+                if ($value !== null) {
+                    $component->state($value);
+                }
+            } catch (\Throwable $e) {
+                $component->state('••••••');
+            }
+        });
+
+        // Persist value to lockbox
+        $this->saveRelationshipsUsing(function (EncryptedTextInput $component): void {
+            $state = $component->getState();
+
+            if ($state === null || $state === '' || $state === '••••••') {
+                return;
+            }
+
+            $record = $component->getRecord();
+
+            if (!$record instanceof HasLockbox) {
+                return;
+            }
+
+            /** @var Authenticatable&User $user */
+            $user = auth()->user();
+
+            if (!$user instanceof HasLockboxKeys) {
+                throw new RuntimeException(sprintf(
+                    'Model %s must implement %s to use EncryptedTextInput.',
+                    $user ? $user::class : 'null',
+                    HasLockboxKeys::class,
+                ));
+            }
+
+            $input = $this->lockboxInput ?? (string)request('lockbox_input', '');
+
+            if ($input === '') {
+                return;
+            }
+
+            app(LockboxService::class)->set($record, $component->getName(), $state, $user, $input);
+
+            $component->state('••••••');
         });
     }
 }

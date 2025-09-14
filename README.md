@@ -21,7 +21,8 @@ This ensures that **even administrators cannot decrypt data** without the user-p
 
 ## 🚧 Project Status
 
-This package is currently in **alpha** and under active development. Features and APIs may change before a stable release.
+This package is currently in **alpha** and under active development. Features and APIs may change before a stable
+release.
 
 ---
 
@@ -37,6 +38,56 @@ This package is currently in **alpha** and under active development. Features an
 - 🔐 **TOTP support** if your user implements `HasAppAuthentication`
 - 🛡️ **Zero-knowledge for admins** – data is unreadable without user input
 - ⚙️ **Configurable key material providers** (PBKDF2, Passkeys, TOTP, custom)
+
+---
+
+## 🗄️ Centralized Lockbox Storage
+
+Unlike typical field encryption solutions, **Filament Lockbox does not store encrypted data on your models**.  
+Instead, all encrypted values are kept in a dedicated, polymorphic `lockbox` table — completely transparent to your
+application.
+
+### ✅ Benefits of This Architecture
+
+- **Drop-in Usage**  
+  Simply use `EncryptedTextInput` anywhere in your Filament form schema — no schema changes or model attributes
+  required.
+
+- **Polymorphic & Universal**  
+  Works with any Eloquent model (`User`, `Product`, `Order`, ...).  
+  All sensitive data is centralized, making it easy to see which records have encrypted fields.
+
+- **Performance-Friendly**  
+  Main tables remain lean and fast, as encrypted data is kept out of your core business tables.
+
+- **Compliance & Auditing**
+    - Simplified GDPR / “Right to be Forgotten”: just delete Lockbox entries per user.
+    - Perfect for audits: one table gives full visibility of all encrypted fields.
+    - Allows separate backup and retention strategies.
+
+- **Developer Experience**
+    - No manual hooks or closures needed — saving & loading is handled automatically.
+    - `dehydrated(false)` is applied internally.
+    - Just replace `TextInput` with `EncryptedTextInput` and get full encryption.
+
+```php
+$form->schema([
+    // Before:
+    TextInput::make('credit_card'),
+
+    // After:
+    EncryptedTextInput::make('credit_card')
+        ->label('Credit Card'),
+]);
+```
+
+The plugin takes care of everything:
+
+- 🔑 Per-user key management
+- 🔐 Encryption & decryption
+- 🗄️ Transparent Lockbox record handling
+- 🔄 Auto-loading of values on form display
+- 🧹 Automatic cleanup when models are deleted
 
 ---
 

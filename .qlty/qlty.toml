@@ -42,6 +42,7 @@ exclude_patterns = [
   "**/vendor/**",
   ".github/**",
   "resources/js/**",
+  "bin/**"
 ]
 
 test_patterns = [
@@ -88,16 +89,10 @@ name = "phpstan"
 [[plugin]]
 name = "prettier"
 exclude_patterns = [
-  ".github/workflows/**",
+  ".github/**",
   "resources/js/**"
+  "bin/**"
 ]
-
-[[plugin]]
-name = "radarlint-iac"
-mode = "monitor"
-
-[[plugin]]
-name = "radarlint-js"
 
 [[plugin]]
 name = "radarlint-php"

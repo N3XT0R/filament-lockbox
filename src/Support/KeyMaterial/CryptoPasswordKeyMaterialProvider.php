@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Key material provider that derives material from a user's crypto password.
- */
-
 declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
@@ -16,21 +12,37 @@ use RuntimeException;
 
 /**
  * Generates key material from a user-provided crypto password.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class CryptoPasswordKeyMaterialProvider implements UserKeyMaterialProviderInterface
 {
     /**
      * Determine if the user has a crypto password configured.
+     *
+     * @param User $user User to check
+     *
+     * @return bool True if a crypto password exists, false otherwise
      */
     public function supports(User $user): bool
     {
-        return $user instanceof HasLockboxKeys && !empty($user->getCryptoPasswordHash());
+        return $user instanceof HasLockboxKeys
+            && !empty($user->getCryptoPasswordHash());
     }
 
     /**
-     * Return key material derived from the validated crypto password.
+     * Derive key material from the provided crypto password.
      *
-     * @throws RuntimeException when the input is missing or invalid
+     * @param User        $user  User providing the password
+     * @param string|null $input Crypto password input
+     *
+     * @throws RuntimeException If the input is missing or invalid
+     *
+     * @return string Derived key material
      */
     public function provide(User $user, ?string $input): string
     {

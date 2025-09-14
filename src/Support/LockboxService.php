@@ -8,10 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 
+/**
+ * Service for storing and retrieving lockbox values.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
+ */
 class LockboxService
 {
-    public function set(Model&HasLockbox $lockboxable, string $name, string $value, User $user): void
-    {
+    /**
+     * Store an encrypted value for a lockboxable model.
+     *
+     * @param Model&HasLockbox $lockboxable Model implementing lockbox relation
+     * @param string           $name        Lockbox item name
+     * @param string           $value       Plain text value to encrypt
+     * @param User             $user        User owning the data
+     *
+     * @return void
+     */
+    public function set(
+        Model&HasLockbox $lockboxable,
+        string $name,
+        string $value,
+        User $user,
+    ): void {
         $encrypter = app(LockboxManager::class)->forUser($user);
 
         $lockboxable->lockbox()->updateOrCreate(
@@ -20,9 +43,21 @@ class LockboxService
         );
     }
 
-    public function get(Model&HasLockbox $lockboxable, string $name, User $user): ?string
-    {
-        /** @var \N3XT0R\FilamentLockbox\Models\Lockbox|null $record */
+    /**
+     * Retrieve and decrypt a value from the lockbox.
+     *
+     * @param Model&HasLockbox $lockboxable Model implementing lockbox relation
+     * @param string           $name        Lockbox item name
+     * @param User             $user        User owning the data
+     *
+     * @return string|null Decrypted value or null when missing
+     */
+    public function get(
+        Model&HasLockbox $lockboxable,
+        string $name,
+        User $user,
+    ): ?string {
+        /** @var \\N3XT0R\\FilamentLockbox\\Models\\Lockbox|null $record */
         $record = $lockboxable->lockbox()
             ->where('name', $name)
             ->where('user_id', $user->getKey())

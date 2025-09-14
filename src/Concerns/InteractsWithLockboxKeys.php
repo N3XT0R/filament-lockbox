@@ -10,8 +10,22 @@ use Illuminate\Support\Facades\Hash;
 use Random\RandomException;
 use RuntimeException;
 
+/**
+ * Provides helper methods for models using lockbox keys.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
+ */
 trait InteractsWithLockboxKeys
 {
+    /**
+     * Get the encrypted user key.
+     *
+     * @return string|null Encrypted key or null when missing
+     */
     public function getEncryptedUserKey(): ?string
     {
         $this->ensureModelContext();
@@ -20,6 +34,13 @@ trait InteractsWithLockboxKeys
         return $this->getAttribute('encrypted_user_key');
     }
 
+    /**
+     * Store the encrypted user key.
+     *
+     * @param string $value Encrypted key value
+     *
+     * @return void
+     */
     public function setEncryptedUserKey(string $value): void
     {
         $this->ensureModelContext();
@@ -27,6 +48,11 @@ trait InteractsWithLockboxKeys
         $this->setAttribute('encrypted_user_key', $value);
     }
 
+    /**
+     * Get the hash of the user's crypto password.
+     *
+     * @return string|null Hash value or null when unset
+     */
     public function getCryptoPasswordHash(): ?string
     {
         $this->ensureModelContext();
@@ -35,6 +61,13 @@ trait InteractsWithLockboxKeys
         return $this->getAttribute('crypto_password_hash');
     }
 
+    /**
+     * Set the hash of the user's crypto password.
+     *
+     * @param string $hash Hashed password value
+     *
+     * @return void
+     */
     public function setCryptoPasswordHash(string $hash): void
     {
         $this->ensureModelContext();
@@ -42,6 +75,11 @@ trait InteractsWithLockboxKeys
         $this->setAttribute('crypto_password_hash', $hash);
     }
 
+    /**
+     * Get the configured lockbox provider class.
+     *
+     * @return string|null Provider class name
+     */
     public function getLockboxProvider(): ?string
     {
         $this->ensureModelContext();
@@ -50,6 +88,13 @@ trait InteractsWithLockboxKeys
         return $this->getAttribute('lockbox_provider');
     }
 
+    /**
+     * Set the lockbox provider class.
+     *
+     * @param string $provider Provider class name
+     *
+     * @return void
+     */
     public function setLockboxProvider(string $provider): void
     {
         $this->ensureModelContext();
@@ -59,8 +104,11 @@ trait InteractsWithLockboxKeys
     }
 
     /**
-     * Generate a new encrypted user key if none exists.
-     * @throws RandomException
+     * Generate and store an encrypted user key if one does not exist.
+     *
+     * @throws RandomException If random bytes cannot be generated
+     *
+     * @return void
      */
     public function initializeUserKeyIfMissing(): void
     {
@@ -76,7 +124,11 @@ trait InteractsWithLockboxKeys
     }
 
     /**
-     * Helper to set a new crypto password and hash it securely.
+     * Hash and store a new crypto password.
+     *
+     * @param string $plainPassword Plain password input
+     *
+     * @return void
      */
     public function setCryptoPassword(string $plainPassword): void
     {
@@ -88,7 +140,9 @@ trait InteractsWithLockboxKeys
     }
 
     /**
-     * Check if a user already has a generated encryption key.
+     * Determine if the model already has an encrypted user key.
+     *
+     * @return bool True if a key exists, false otherwise
      */
     public function hasLockboxKey(): bool
     {
@@ -99,8 +153,11 @@ trait InteractsWithLockboxKeys
     }
 
     /**
-     * Ensure this trait is used within an Eloquent Model context.
-     * @throws RuntimeException
+     * Ensure this trait is used within an Eloquent model context.
+     *
+     * @throws RuntimeException If not used on a model
+     *
+     * @return void
      */
     protected function ensureModelContext(): void
     {

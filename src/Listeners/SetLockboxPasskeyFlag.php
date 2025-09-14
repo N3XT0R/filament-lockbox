@@ -9,12 +9,23 @@ use Illuminate\Support\Facades\Session;
 use Spatie\LaravelPasskeys\Events\PasskeyUsedToAuthenticateEvent;
 
 /**
- * Marks the current session as passkey-verified after a successful Passkey login.
- * This does not log in the user – Spatie handles that – it only adds a session flag
- * that Lockbox can later read to derive key material (or to allow unlocking).
+ * Sets a session flag after passkey authentication.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
  */
 class SetLockboxPasskeyFlag
 {
+    /**
+     * Store a flag indicating the session was authenticated via passkey.
+     *
+     * @param PasskeyUsedToAuthenticateEvent $event Authentication event
+     *
+     * @return void
+     */
     public function handle(PasskeyUsedToAuthenticateEvent $event): void
     {
         $flag = config('filament-lockbox.passkeys.session_flag', 'lockbox_passkey_verified');

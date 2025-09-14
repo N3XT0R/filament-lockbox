@@ -10,15 +10,34 @@ use Illuminate\Support\Facades\Crypt;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use RuntimeException;
 
+/**
+ * Creates encrypter instances for users using lockbox keys.
+ *
+ * @category Filament Security
+ * @package  n3xt0r/filament-lockbox
+ * @author   Ilya Beliaev
+ * @license  MIT
+ * @link     https://github.com/N3XT0R/filament-lockbox
+ */
 class LockboxManager
 {
     /**
-     * Build an Encrypter instance for the given user model.
-     * Combines server-side key (encrypted_user_key) with user-provided input (TOTP or crypto password).
+     * Build an encrypter for the given user model.
+     * Combines the stored encrypted key with user-provided material.
      *
+     * @param User        $user          User to build the encrypter for
+     * @param string|null $input         Optional user-provided secret
+     * @param string|null $providerClass Provider class override
+     *
+     * @throws RuntimeException If required data is missing
+     *
+     * @return Encrypter Encrypter instance for the user
      */
-    public function forUser(User $user, ?string $input = null, ?string $providerClass = null): Encrypter
-    {
+    public function forUser(
+        User $user,
+        ?string $input = null,
+        ?string $providerClass = null,
+    ): Encrypter {
         $this->assertValidUserModel($user);
 
         /** @var User&HasLockboxKeys $user */
@@ -41,9 +60,13 @@ class LockboxManager
     }
 
     /**
-     * Ensures that the given model implements all required interfaces.
+     * Ensure the given model implements required interfaces.
      *
-     * @throws RuntimeException
+     * @param User $user User model to validate
+     *
+     * @throws RuntimeException If the model is invalid
+     *
+     * @return void
      */
     private function assertValidUserModel(User $user): void
     {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Tests\Unit\Support;
 
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;

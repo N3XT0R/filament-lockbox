@@ -31,7 +31,10 @@ class LockboxServiceTest extends TestCase
         $encrypter = new Encrypter($key, config('app.cipher'));
 
         $manager = new class ($encrypter) extends LockboxManager {
-            public function __construct(private Encrypter $encrypter) {}
+            public function __construct(private Encrypter $encrypter)
+            {
+            }
+
             public function forUser(User $user, ?string $input = null, ?string $providerClass = null): Encrypter
             {
                 return $this->encrypter;

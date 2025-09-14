@@ -18,3 +18,17 @@ RUN docker-php-ext-install pdo_mysql zip \
                  | php -- --install-dir=/usr/local/bin --filename=composer \
 
 RUN rm -rf /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# User setup
+RUN adduser --uid 1000 --disabled-password --gecos "" --shell /bin/bash appuser
+
+# Install qlty as root
+RUN curl https://qlty.sh | bash \
+ && cp /root/.qlty/bin/qlty /usr/local/bin/qlty
+
+USER appuser
+WORKDIR /var/www/html
+
+RUN git config --global --add safe.directory /var/www/html
+
+CMD ["sleep", "infinity"]

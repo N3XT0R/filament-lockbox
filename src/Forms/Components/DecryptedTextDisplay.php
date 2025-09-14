@@ -62,7 +62,7 @@ class DecryptedTextDisplay extends Field
                 return;
             }
 
-            /** @var Authenticatable&User|null $user */
+            /** @var (Authenticatable&User)|null $user */
             $user = auth()->user();
 
             if (!$user instanceof HasLockboxKeys) {

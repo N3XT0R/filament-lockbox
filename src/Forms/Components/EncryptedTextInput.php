@@ -62,7 +62,7 @@ class EncryptedTextInput extends TextInput
                 return;
             }
 
-            /** @var Authenticatable&User|null $user */
+            /** @var (Authenticatable&User)|null $user */
             $user = auth()->user();
 
             $service = app(LockboxService::class);

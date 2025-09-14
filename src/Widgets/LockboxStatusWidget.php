@@ -161,6 +161,7 @@ class LockboxStatusWidget extends Widget implements HasForms
     protected function getProviderOptions(): array
     {
         $providers = config('filament-lockbox.providers', []);
+        $providers[] = CryptoPasswordKeyMaterialProvider::class;
 
         return collect($providers)
             ->mapWithKeys(fn (string $class) => [$class => class_basename($class)])

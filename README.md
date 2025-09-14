@@ -198,7 +198,7 @@ Your `User` model must:
 - Use the `InteractsWithLockboxKeys` trait
 - Hide and cast the lockbox fields
 
-### Example
+### Example: User Model
 
 ```php
 use Filament\Models\Contracts\FilamentUser;
@@ -214,6 +214,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     protected $hidden = [
         'encrypted_user_key',
         'crypto_password_hash',
+        'lockbox_provider',
     ];
 
     protected function casts(): array
@@ -221,10 +222,40 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return [
             'encrypted_user_key' => 'encrypted',
             'crypto_password_hash' => 'string',
+            'lockbox_provider' => 'string',
         ];
     }
 }
 ```
+
+### Example: Any Model with Encrypted Fields
+
+Any Eloquent model that should have encrypted fields must:
+
+- Implement `HasLockbox`
+- Use the `InteractsWithLockbox` trait
+
+This enables the polymorphic relation to the `lockbox` table and lets the package handle encryption transparently.
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
+use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockbox;
+
+class Company extends Model implements HasLockbox
+{
+    use InteractsWithLockbox;
+
+    protected $fillable = [
+        'name',
+        'email',
+        // no need to list encrypted fields here – they live in the lockbox table
+    ];
+}
+```
+
+You can now use `EncryptedTextInput::make('field_name')` in your Filament form schemas for this model —  
+the package will automatically store and retrieve the data from the centralized `lockbox` table.
 
 ---
 

@@ -18,7 +18,8 @@ class LockboxStatusWidgetTest extends TestCase
         $user = new User();
         $this->be($user);
 
-        Livewire::actingAs($user)->test(LockboxStatusWidget::class)
+        Livewire::actingAs($user)
+            ->test(LockboxStatusWidget::class)
             ->assertSet('supportsLockbox', false);
     }
 
@@ -66,8 +67,9 @@ class LockboxStatusWidgetTest extends TestCase
             }
         };
 
-        Livewire::actingAs($user)->test(LockboxStatusWidget::class)
+        Livewire::actingAs($user)
+            ->test(LockboxStatusWidget::class)
             ->assertSet('supportsLockbox', true)
-            ->assertSet('provider', null);
+            ->assertSet('provider', CryptoPasswordKeyMaterialProvider::class);
     }
 }

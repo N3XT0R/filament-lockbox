@@ -104,7 +104,7 @@ class EncryptedTextInput extends TextInput
                 return;
             }
 
-            /** @var Authenticatable&User $user */
+            /** @var (Authenticatable&User)|null $user */
             $user = auth()->user();
 
             if (!$user instanceof HasLockboxKeys) {

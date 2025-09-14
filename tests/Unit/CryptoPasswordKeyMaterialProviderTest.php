@@ -10,6 +10,7 @@ use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
+use RuntimeException;
 
 class CryptoPasswordKeyMaterialProviderTest extends TestCase
 {
@@ -43,5 +44,24 @@ class CryptoPasswordKeyMaterialProviderTest extends TestCase
         $key = $provider->provide($user, $password);
 
         $this->assertSame(32, strlen($key));
+    }
+
+    public function testSupportsReturnsFalseWithoutHash(): void
+    {
+        $user = new class () extends User implements HasLockboxKeys {
+            use InteractsWithLockboxKeys;
+            protected $guarded = [];
+        };
+        $user->id = 1;
+        $provider = new CryptoPasswordKeyMaterialProvider();
+        $this->assertFalse($provider->supports($user));
+    }
+
+    public function testProvideThrowsExceptionForInvalidPassword(): void
+    {
+        $user = $this->createUser('secret');
+        $provider = new CryptoPasswordKeyMaterialProvider();
+        $this->expectException(RuntimeException::class);
+        $provider->provide($user, 'wrong');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Key material provider that derives material from a user's crypto password.
  */

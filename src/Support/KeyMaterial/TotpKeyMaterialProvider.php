@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Key material provider that validates a TOTP code from the user.
  */

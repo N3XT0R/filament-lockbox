@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Key material provider that derives encryption material from a user's passkey.
  */

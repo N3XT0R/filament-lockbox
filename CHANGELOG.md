@@ -21,19 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Filament Plugin: `FilamentLockboxPlugin` with optional status widget
 - Translation Support: Language file with customizable strings
 - Configurable Providers: Ability to register custom key material resolvers
-
-### Changed
-
-- N/A (first alpha)
-
-### Deprecated
-
-- N/A
-
-### Removed
-
-- N/A
-
-### Fixed
-
-- N/A
+- LockboxService: Added `exists` helper and support for user-provided secrets
+- Encrypted components now rely on `LockboxService` for encryption logic
+- `EncryptedTextInput` and `DecryptedTextDisplay` use Laravel's auth contract
+- `LockboxStatusWidget` resets input fields after saving settings
+- Improve type handling in `Lockbox` model and `LockboxService`
+- Correct `phpunit.xml` configuration and widget state tests

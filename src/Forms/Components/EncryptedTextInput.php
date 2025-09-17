@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\LockboxService;
+use N3XT0R\FilamentLockbox\Services\LockboxService;
 use RuntimeException;
 
 /**

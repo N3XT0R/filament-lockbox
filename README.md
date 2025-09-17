@@ -175,8 +175,8 @@ Optional configuration:
 return [
     'show_widget' => true, // set false to hide the status widget
     'providers' => [
-        \N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider::class,
-        \N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider::class,
+        \N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider::class,
+        \N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider::class,
     ],
 ];
 ```

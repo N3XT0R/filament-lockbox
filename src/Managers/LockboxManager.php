@@ -8,6 +8,7 @@ use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Crypt;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use RuntimeException;
 
 /**
@@ -30,11 +31,11 @@ class LockboxManager
      * @param string|null $providerClass Provider class override
      *
      * @throws RuntimeException If required data is missing
+     * @return Encrypter        Encrypter instance for the user
      *
-     * @return Encrypter Encrypter instance for the user
      */
     public function forUser(
-        User $user,
+        User    $user,
         ?string $input = null,
         ?string $providerClass = null,
     ): Encrypter {
@@ -65,8 +66,8 @@ class LockboxManager
      * @param User $user User model to validate
      *
      * @throws RuntimeException If the model is invalid
-     *
      * @return void
+     *
      */
     private function assertValidUserModel(User $user): void
     {

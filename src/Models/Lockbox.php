@@ -6,6 +6,7 @@ namespace N3XT0R\FilamentLockbox\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User;
 
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Auth\User;
  * @property int    $user_id
  * @property string $name
  * @property string $value
+ * @property string $encrypted_dek
  */
 class Lockbox extends Model
 {
@@ -30,6 +32,7 @@ class Lockbox extends Model
         'user_id',
         'name',
         'value',
+        'encrypted_dek',
     ];
 
     /**
@@ -50,5 +53,10 @@ class Lockbox extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function grants(): HasMany
+    {
+        return $this->hasMany(LockboxGrant::class);
     }
 }

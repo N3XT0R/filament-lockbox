@@ -137,11 +137,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
      */
     private function unwrapDekForGroup(string $wrappedDek, LockboxGroup $group, User $user): string
     {
-        $groupKeyWrapped = $group->members()
-            ->where('user_id', $user->getKey())
-            ->first()
-            ->pivot
-            ->wrapped_group_key_for_user;
+        $groupKeyWrapped = $group->getWrappedGroupKeyForUser($user);
 
         if (!$groupKeyWrapped) {
             throw new RuntimeException('User has no wrapped group key.');

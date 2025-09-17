@@ -62,4 +62,12 @@ class LockboxGroup extends Model
     {
         return $this->morphMany(LockboxGrant::class, 'grantee');
     }
+
+    public function getWrappedGroupKeyForUser(User $user): ?string
+    {
+        /** @var LockboxGroupUser|null $pivot */
+        $pivot = $this->members()->where('user_id', $user->getKey())->first()?->pivot;
+
+        return $pivot?->wrapped_group_key_for_user;
+    }
 }

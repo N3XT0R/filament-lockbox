@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Unit\Forms;
+namespace N3XT0R\FilamentLockbox\Tests\Unit\Forms\Actions;
 
 use Illuminate\Http\Request;
 use N3XT0R\FilamentLockbox\Forms\Actions\UnlockLockboxAction;

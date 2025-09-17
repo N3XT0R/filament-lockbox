@@ -50,7 +50,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --configuration phpunit.xml --path-coverage
 
-      - uses: qltysh/qlty-action/coverage@v1
+      - uses: qltysh/qlty-action/coverage@v2
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: build/logs/clover.xml

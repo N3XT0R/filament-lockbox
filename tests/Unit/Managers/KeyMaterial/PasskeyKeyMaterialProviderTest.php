@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Unit\Support;
+namespace N3XT0R\FilamentLockbox\Tests\Unit\Managers\KeyMaterial;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User;
@@ -48,7 +48,7 @@ class PasskeyKeyMaterialProviderTest extends TestCase
         $provider = new PasskeyKeyMaterialProvider();
         $key = $provider->provide($user, null);
 
-        $expected = hash('sha256', hash_hmac('sha256', 'cred', 'test-app-key') . 1, true);
+        $expected = hash('sha256', PasskeyKeyMaterialProviderTest . phphash_hmac('sha256', 'cred', 'test-app-key') . 1, true);
         $this->assertSame($expected, $key);
     }
 }

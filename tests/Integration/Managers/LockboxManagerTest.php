@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Integration;
+namespace N3XT0R\FilamentLockbox\Tests\Integration\Managers;
 
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Support\Facades\Crypt;

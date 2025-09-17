@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('lockbox_group_user', function (Blueprint $table): void {
+        Schema::create('lockbox_group_user', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('group_id')->constrained('lockbox_groups')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

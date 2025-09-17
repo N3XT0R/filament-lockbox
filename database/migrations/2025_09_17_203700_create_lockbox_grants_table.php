@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('lockbox_grants', function (Blueprint $table): void {
+        Schema::create('lockbox_grants', static function (Blueprint $table): void {
             $table->id();
 
             // The lockbox item this grant belongs to

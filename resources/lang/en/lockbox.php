@@ -36,5 +36,6 @@ return [
             'input_required' => 'Unlock required to view this field.',
             'decrypt_failed' => 'Unable to decrypt value.',
         ],
+        'shared_via_grant' => 'shared',
     ],
 ];

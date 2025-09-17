@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Services;
 
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\DB;
 use N3XT0R\FilamentLockbox\Contracts\Services\LockboxGrantServiceInterface;
 use N3XT0R\FilamentLockbox\Managers\LockboxManager;
 use N3XT0R\FilamentLockbox\Models\Lockbox;
@@ -88,6 +89,21 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     }
 
     /**
+     * Return [plaintext DEK, LockboxGrant|null] for UI components that need source info.
+     *
+     * @return array{0: string|null, 1: LockboxGrant|null}
+     */
+    public function resolveDekForUserWithGrant(Lockbox $lockbox, User $user): array
+    {
+        $grant = $this->findGrantForUserOrGroups($lockbox, $user);
+        if (!$grant) {
+            return [null, null];
+        }
+
+        return [$this->unwrapFromGrant($grant, $user), $grant];
+    }
+
+    /**
      * Decrypt the DEK as owner (using encrypted_dek field).
      */
     private function decryptDekForOwner(Lockbox $lockbox): string
@@ -147,5 +163,62 @@ class LockboxGrantService implements LockboxGrantServiceInterface
         $groupKey = $userEncrypter->decrypt($groupKeyWrapped);
 
         return decrypt($wrappedDek, $groupKey);
+    }
+
+    /**
+     * Find the first applicable grant for the user (direct or via any of user's groups).
+     */
+    private function findGrantForUserOrGroups(Lockbox $lockbox, User $user): ?LockboxGrant
+    {
+        // Direct user grant
+        /**
+         * @var LockboxGrant $direct
+         */
+        $direct = $lockbox->grants()
+            ->where('grantee_type', $user->getMorphClass())
+            ->where('grantee_id', $user->getKey())
+            ->first();
+
+        if ($direct) {
+            return $direct;
+        }
+
+        // Group grants (any group the user is a member of)
+        $groupType = (new LockboxGroup())->getMorphClass();
+
+        $groupIds = DB::table('lockbox_group_user')
+            ->where('user_id', $user->getKey())
+            ->pluck('group_id');
+
+        if ($groupIds->isEmpty()) {
+            return null;
+        }
+
+        /**
+         * @var LockboxGrant|null $grant
+         */
+        $grant = $lockbox->grants()
+            ->where('grantee_type', $groupType)
+            ->whereIn('grantee_id', $groupIds)
+            ->first();
+
+        return $grant;
+    }
+
+    /**
+     * Unwrap the DEK from a grant (handles user or group recipients).
+     */
+    private function unwrapFromGrant(LockboxGrant $grant, User $user): string
+    {
+        $userType = $user->getMorphClass();
+
+        if ($grant->getAttribute('grantee_type') === $userType
+            && (int)$grant->getAttribute('grantee_id') === (int)$user->getKey()) {
+            return $this->unwrapDekForUser($grant->getAttribute('wrapped_dek'), $user);
+        }
+
+        $group = LockboxGroup::findOrFail((int)$grant->getAttribute('grantee_id'));
+
+        return $this->unwrapDekForGroup($grant->getAttribute('wrapped_dek'), $group, $user);
     }
 }

@@ -36,4 +36,11 @@ interface LockboxGrantServiceInterface
      * @return string|null Plaintext DEK or null if no access
      */
     public function resolveDekForUser(Lockbox $lockbox, User $user): ?string;
+
+    /**
+     * Return [plaintext DEK, LockboxGrant|null] for UI components that need source info.
+     *
+     * @return array{0: string|null, 1: LockboxGrant|null}
+     */
+    public function resolveDekForUserWithGrant(Lockbox $lockbox, User $user): array;
 }

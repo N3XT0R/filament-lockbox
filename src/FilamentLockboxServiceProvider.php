@@ -247,9 +247,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
             '2025_09_12_213516_add_lockbox_fields_to_users_table',
             '2025_09_12_213517_create_lockbox_table',
             '2025_09_17_203600_add_encrypted_dek_to_lockbox_table',
+            '2025_09_17_203630_create_lockbox_groups_table',
             '2025_09_17_203700_create_lockbox_grants_table',
             '2025_09_17_204100_create_lockbox_group_user_table',
-            '2025_09_17_204200_create_lockbox_grants_table',
         ];
     }
 }

@@ -27,7 +27,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
         $wrappedDek = $this->wrapDekForUser($dek, $user);
 
         return LockboxGrant::create([
-            'lockbox_id' => $lockbox->id,
+            'lockbox_id' => $lockbox->getKey(),
             'grantee_type' => $user->getMorphClass(),
             'grantee_id' => $user->getKey(),
             'wrapped_dek' => $wrappedDek,
@@ -47,7 +47,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
         $wrappedDek = $this->wrapDekForGroup($dek, $group);
 
         return LockboxGrant::create([
-            'lockbox_id' => $lockbox->id,
+            'lockbox_id' => $lockbox->getKey(),
             'grantee_type' => $group->getMorphClass(),
             'grantee_id' => $group->getKey(),
             'wrapped_dek' => $wrappedDek,
@@ -71,16 +71,16 @@ class LockboxGrantService implements LockboxGrantServiceInterface
             ->first();
 
         if ($grant) {
-            return $this->unwrapDekForUser($grant->wrapped_dek, $user);
+            return $this->unwrapDekForUser($grant->getAttribute('wrapped_dek'), $user);
         }
 
         // 2) Group grants
         $groupGrants = $lockbox->grants()->where('grantee_type', (new LockboxGroup())->getMorphClass())->get();
 
         foreach ($groupGrants as $groupGrant) {
-            $group = LockboxGroup::find($groupGrant->grantee_id);
+            $group = LockboxGroup::find($groupGrant->getAttribute('grantee_id'));
             if ($group && $group->members->contains($user)) {
-                return $this->unwrapDekForGroup($groupGrant->wrapped_dek, $group, $user);
+                return $this->unwrapDekForGroup($groupGrant->getAttribute('wrapped_dek'), $group, $user);
             }
         }
 
@@ -117,7 +117,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
      */
     private function wrapDekForGroup(string $dek, LockboxGroup $group): string
     {
-        $groupKey = decrypt($group->encrypted_group_key); // using Crypt facade internally
+        $groupKey = decrypt($group->getAttribute('encrypted_group_key')); // using Crypt facade internally
 
         return encrypt($dek, $groupKey);
     }
@@ -138,7 +138,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     private function unwrapDekForGroup(string $wrappedDek, LockboxGroup $group, User $user): string
     {
         $groupKeyWrapped = $group->members()
-            ->where('user_id', $user->id)
+            ->where('user_id', $user->getKey())
             ->first()
             ->pivot
             ->wrapped_group_key_for_user;

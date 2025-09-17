@@ -7,10 +7,24 @@ namespace N3XT0R\FilamentLockbox\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Represents a cryptographic group that can share lockbox items.
+ *
+ * @property int         $id
+ * @property string      $name
+ * @property string      $encrypted_group_key
+ * @property int         $created_by
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @property-read User $creator
+ * @property-read Collection<int, User> $members
+ * @property-read Collection<int, LockboxGrant> $grants
  */
 class LockboxGroup extends Model
 {
@@ -44,7 +58,7 @@ class LockboxGroup extends Model
     /**
      * Grants referencing this group as grantee.
      */
-    public function grants()
+    public function grants(): MorphMany
     {
         return $this->morphMany(LockboxGrant::class, 'grantee');
     }

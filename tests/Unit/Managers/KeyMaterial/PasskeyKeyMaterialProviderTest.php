@@ -32,7 +32,7 @@ class PasskeyKeyMaterialProviderTest extends TestCase
         $user->shouldReceive('getKey')->andReturn(1);
 
         $passkey = new Passkey();
-        $passkey->id = 10;
+        $passkey->setAttribute($passkey->getKeyName(), 10);
         $passkey->setAttribute('credential_id', 'cred');
 
         $relation = Mockery::mock(HasMany::class);
@@ -48,7 +48,8 @@ class PasskeyKeyMaterialProviderTest extends TestCase
         $provider = new PasskeyKeyMaterialProvider();
         $key = $provider->provide($user, null);
 
-        $expected = hash('sha256', PasskeyKeyMaterialProviderTest . phphash_hmac('sha256', 'cred', 'test-app-key') . 1, true);
+
+        $expected = hash('sha256', hash_hmac('sha256', 'cred', 'test-app-key') . 1, true);
         $this->assertSame($expected, $key);
     }
 }

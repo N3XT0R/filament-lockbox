@@ -13,7 +13,7 @@ use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use N3XT0R\FilamentLockbox\Forms\Components\DecryptedTextDisplay;
 use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
-use N3XT0R\FilamentLockbox\Service\LockboxService;
+use N3XT0R\FilamentLockbox\Services\LockboxService;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class DecryptedTextDisplayTest extends TestCase

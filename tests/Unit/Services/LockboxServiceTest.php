@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Unit\Support;
+namespace N3XT0R\FilamentLockbox\Tests\Unit\Services;
 
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Managers\LockboxManager;
-use N3XT0R\FilamentLockbox\Service\LockboxService;
+use N3XT0R\FilamentLockbox\Services\LockboxService;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class LockboxServiceTest extends TestCase

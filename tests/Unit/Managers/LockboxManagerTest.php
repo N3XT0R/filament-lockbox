@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Unit\Support;
+namespace N3XT0R\FilamentLockbox\Tests\Unit\Managers;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Config;

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Models\Lockbox;
-use N3XT0R\FilamentLockbox\Service\LockboxService;
+use N3XT0R\FilamentLockbox\Services\LockboxService;
 use RuntimeException;
 
 /** @phpstan-ignore-next-line */
@@ -71,9 +71,9 @@ trait InteractsWithLockbox
     /**
      * Ensure this trait is used within an Eloquent model.
      *
+     *
      * @throws RuntimeException If not used on a model
      * @return void
-     *
      */
     protected function ensureModelContext(): void
     {

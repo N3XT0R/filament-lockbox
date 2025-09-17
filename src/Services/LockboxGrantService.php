@@ -24,7 +24,6 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     public function shareWithUser(Lockbox $lockbox, User $user): LockboxGrant
     {
         $dek = $this->decryptDekForOwner($lockbox);
-
         $wrappedDek = $this->wrapDekForUser($dek, $user);
 
         return LockboxGrant::create([
@@ -44,7 +43,6 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     public function shareWithGroup(Lockbox $lockbox, LockboxGroup $group): LockboxGrant
     {
         $dek = $this->decryptDekForOwner($lockbox);
-
         $wrappedDek = $this->wrapDekForGroup($dek, $group);
 
         return LockboxGrant::create([
@@ -57,6 +55,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
 
     /**
      * Resolve a usable DEK for a given user (direct grant or via group).
+     * Uses eager loading for groups to avoid N+1 queries.
      *
      * @param Lockbox $lockbox Lockbox entry
      * @param User    $user    Accessing user
@@ -75,11 +74,25 @@ class LockboxGrantService implements LockboxGrantServiceInterface
             return $this->unwrapDekForUser($grant->getAttribute('wrapped_dek'), $user);
         }
 
-        // 2) Group grants
-        $groupGrants = $lockbox->grants()->where('grantee_type', (new LockboxGroup())->getMorphClass())->get();
+        // 2) Group grants (eager loaded)
+        $groupGrants = $lockbox->grants()
+            ->where('grantee_type', (new LockboxGroup())->getMorphClass())
+            ->get();
+
+        if ($groupGrants->isEmpty()) {
+            return null;
+        }
+
+        $groupIds = $groupGrants->pluck('grantee_id')->all();
+
+        // Load all groups with members in one query
+        $groups = LockboxGroup::with('members')
+            ->whereIn('id', $groupIds)
+            ->get()
+            ->keyBy('id');
 
         foreach ($groupGrants as $groupGrant) {
-            $group = LockboxGroup::find($groupGrant->getAttribute('grantee_id'));
+            $group = $groups->get((int)$groupGrant->getAttribute('grantee_id'));
             if ($group && $group->members->contains($user)) {
                 return $this->unwrapDekForGroup($groupGrant->getAttribute('wrapped_dek'), $group, $user);
             }
@@ -129,11 +142,12 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     }
 
     /**
-     * Wrap the DEK for a group.
+     * ⚠️ Uses Laravel Crypt (APP_KEY) to encrypt the group DEK.
+     * Consider migrating to per-user wrapped group keys for full zero-knowledge.
      */
     private function wrapDekForGroup(string $dek, LockboxGroup $group): string
     {
-        $groupKey = decrypt($group->getAttribute('encrypted_group_key')); // using Crypt facade internally
+        $groupKey = decrypt($group->getAttribute('encrypted_group_key'));
 
         return encrypt($dek, $groupKey);
     }
@@ -171,9 +185,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
     private function findGrantForUserOrGroups(Lockbox $lockbox, User $user): ?LockboxGrant
     {
         // Direct user grant
-        /**
-         * @var LockboxGrant $direct
-         */
+        /** @var LockboxGrant|null $direct */
         $direct = $lockbox->grants()
             ->where('grantee_type', $user->getMorphClass())
             ->where('grantee_id', $user->getKey())
@@ -194,9 +206,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
             return null;
         }
 
-        /**
-         * @var LockboxGrant|null $grant
-         */
+        /** @var LockboxGrant|null $grant */
         $grant = $lockbox->grants()
             ->where('grantee_type', $groupType)
             ->whereIn('grantee_id', $groupIds)
@@ -217,7 +227,7 @@ class LockboxGrantService implements LockboxGrantServiceInterface
             return $this->unwrapDekForUser($grant->getAttribute('wrapped_dek'), $user);
         }
 
-        $group = LockboxGroup::findOrFail((int)$grant->getAttribute('grantee_id'));
+        $group = LockboxGroup::with('members')->findOrFail((int)$grant->getAttribute('grantee_id'));
 
         return $this->unwrapDekForGroup($grant->getAttribute('wrapped_dek'), $group, $user);
     }

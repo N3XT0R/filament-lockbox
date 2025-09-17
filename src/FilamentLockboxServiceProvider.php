@@ -16,10 +16,14 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Event;
 use Livewire\Features\SupportTesting\Testable;
 use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
+use N3XT0R\FilamentLockbox\Contracts\Services\LockboxGrantServiceInterface;
+use N3XT0R\FilamentLockbox\Contracts\Services\LockboxServiceInterface;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
 use N3XT0R\FilamentLockbox\Listeners\SetLockboxPasskeyFlag;
 use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Services\LockboxGrantService;
+use N3XT0R\FilamentLockbox\Services\LockboxService;
 use N3XT0R\FilamentLockbox\Testing\TestsFilamentLockbox;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -162,6 +166,9 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
 
             return $resolver;
         });
+
+        $this->app->singleton(LockboxServiceInterface::class, LockboxService::class);
+        $this->app->singleton(LockboxGrantServiceInterface::class, LockboxGrantService::class);
 
         Event::listen(
             PasskeyUsedToAuthenticateEvent::class,

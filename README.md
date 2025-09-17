@@ -302,6 +302,75 @@ $form
     ]);
 ```
 
+--- 
+
+## 🤝 Sharing & Collaboration
+
+Filament Lockbox provides a mechanism to **share encrypted secrets** with other users or groups.
+
+### 1️⃣ Sharing a Lockbox Entry
+
+You can trigger sharing via the provided `ShareLockboxAction`.  
+This will allow you to select a recipient user or group and create a **grant** for them.
+
+```php
+use N3XT0R\FilamentLockbox\Forms\Actions\ShareLockboxAction;
+
+ShareLockboxAction::make()
+    ->visible(fn ($record) => auth()->id() === $record->user_id), // only owner can share
+```
+
+This opens a modal with:
+
+- **Share type** (User / Group)
+- **Recipient selection** (searchable dropdown)
+
+After confirmation, the **Data Encryption Key (DEK)** for the selected lockbox item is securely wrapped for the chosen
+recipient.
+
+---
+
+### 2️⃣ Displaying Shared Values
+
+For users who received access via a grant, you can display the value using:
+
+```php
+use N3XT0R\FilamentLockbox\Forms\Components\SharedDecryptedTextDisplay;
+
+SharedDecryptedTextDisplay::make('secret_notes')
+    ->label('Shared Secret')
+```
+
+The component:
+
+- Decrypts the value using the grant's DEK.
+- Displays a subtle **"shared with you"** indicator below the value.
+- Falls back to a placeholder if the user has no access.
+
+---
+
+### 3️⃣ Read-Only Access in Forms
+
+If you want shared users to see the encrypted value inside a form without being able to overwrite it, use:
+
+```php
+use N3XT0R\FilamentLockbox\Forms\Components\SharedEncryptedTextInput;
+
+SharedEncryptedTextInput::make('secret_notes')
+    ->label('Shared Secret (read-only)')
+```
+
+This behaves like `EncryptedTextInput` but is **disabled** and does not persist new values on save.
+
+---
+
+### ✅ Benefits of Sharing
+
+- **Least-privilege access:** Grants are per-lockbox entry, not global.
+- **Support for groups:** Share once, all group members get access.
+- **Revocable:** Remove a grant to immediately revoke access.
+- **Audit-friendly:** Grants are stored in a separate `lockbox_grants` table.
+
 ---
 
 ## 🔒 Security Model

@@ -6,7 +6,7 @@ namespace N3XT0R\FilamentLockbox\Tests\Unit;
 
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

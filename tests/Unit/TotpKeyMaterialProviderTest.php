@@ -9,7 +9,7 @@ use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
 use Illuminate\Foundation\Auth\User;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class TotpKeyMaterialProviderTest extends TestCase

@@ -11,8 +11,8 @@ use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
-use N3XT0R\FilamentLockbox\Support\LockboxService;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Service\LockboxService;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class EncryptedTextInputTest extends TestCase
@@ -37,6 +37,7 @@ class EncryptedTextInputTest extends TestCase
 
         $user = new class () extends BaseUser implements HasLockboxKeys, HasLockbox {
             use InteractsWithLockbox;
+
             protected $guarded = [];
             protected $table = 'users';
             public ?string $encryptedUserKey;

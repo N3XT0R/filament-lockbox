@@ -8,8 +8,8 @@ use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
-use N3XT0R\FilamentLockbox\Support\LockboxService;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
+use N3XT0R\FilamentLockbox\Service\LockboxService;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class LockboxServiceTest extends TestCase
@@ -18,6 +18,7 @@ class LockboxServiceTest extends TestCase
     {
         $user = new class () extends User implements HasLockbox {
             use InteractsWithLockbox;
+
             protected $guarded = [];
             protected $table = 'users';
         };

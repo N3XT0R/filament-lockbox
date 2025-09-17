@@ -7,8 +7,8 @@ namespace N3XT0R\FilamentLockbox\Tests\Integration;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
 use Illuminate\Foundation\Auth\User as BaseUser;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class TotpUser extends BaseUser implements HasAppAuthentication

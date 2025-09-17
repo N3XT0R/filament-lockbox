@@ -8,9 +8,9 @@ use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class LockboxUser extends BaseUser implements HasLockboxKeys

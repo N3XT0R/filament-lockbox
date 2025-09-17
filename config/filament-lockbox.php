@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\PasskeyKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\PasskeyKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 
 return [
     'show_widget' => true, // set to false if you don't want the status widget auto-added

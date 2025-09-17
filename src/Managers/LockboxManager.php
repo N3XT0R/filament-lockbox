@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support;
+namespace N3XT0R\FilamentLockbox\Managers;
 
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;

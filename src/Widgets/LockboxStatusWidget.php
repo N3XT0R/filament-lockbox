@@ -15,8 +15,8 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Jobs\ReencryptLockboxData;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 
 class LockboxStatusWidget extends Widget implements HasForms
 {

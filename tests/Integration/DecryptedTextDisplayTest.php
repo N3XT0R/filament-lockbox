@@ -12,8 +12,8 @@ use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
 use N3XT0R\FilamentLockbox\Forms\Components\DecryptedTextDisplay;
-use N3XT0R\FilamentLockbox\Support\LockboxService;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Service\LockboxService;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class DecryptedTextDisplayTest extends TestCase
@@ -38,6 +38,7 @@ class DecryptedTextDisplayTest extends TestCase
 
         $user = new class () extends BaseUser implements HasLockboxKeys, HasLockbox {
             use InteractsWithLockbox;
+
             protected $guarded = [];
             protected $table = 'users';
             public ?string $encryptedUserKey;
@@ -117,6 +118,6 @@ class DecryptedTextDisplayTest extends TestCase
 
         $state = $component->getState();
         $this->assertInstanceOf(HtmlString::class, $state);
-        $this->assertSame('plain-value', (string) $state);
+        $this->assertSame('plain-value', (string)$state);
     }
 }

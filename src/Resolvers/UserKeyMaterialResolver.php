@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support;
+namespace N3XT0R\FilamentLockbox\Resolvers;
 
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
@@ -56,11 +56,11 @@ class UserKeyMaterialResolver
      * @param string|null $providerClass Specific provider class to use
      *
      * @throws RuntimeException If no provider can handle the request
+     * @return string           Derived key material
      *
-     * @return string Derived key material
      */
     public function resolve(
-        User $user,
+        User    $user,
         ?string $input,
         ?string $providerClass = null,
     ): string {

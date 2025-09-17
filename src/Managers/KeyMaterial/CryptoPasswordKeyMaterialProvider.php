@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
+namespace N3XT0R\FilamentLockbox\Managers\KeyMaterial;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
@@ -41,8 +41,8 @@ class CryptoPasswordKeyMaterialProvider implements UserKeyMaterialProviderInterf
      * @param string|null $input Crypto password input
      *
      * @throws RuntimeException If the input is missing or invalid
+     * @return string           Derived key material
      *
-     * @return string Derived key material
      */
     public function provide(User $user, ?string $input): string
     {

@@ -7,7 +7,7 @@ namespace N3XT0R\FilamentLockbox\Tests\Unit\Widgets;
 use Illuminate\Foundation\Auth\User;
 use Livewire\Livewire;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 use N3XT0R\FilamentLockbox\Widgets\LockboxStatusWidget;
 

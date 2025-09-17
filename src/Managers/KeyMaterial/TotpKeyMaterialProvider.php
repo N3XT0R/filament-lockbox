@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
+namespace N3XT0R\FilamentLockbox\Managers\KeyMaterial;
 
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
@@ -40,9 +40,9 @@ class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
      * @param User        $user  User attempting authentication
      * @param string|null $input TOTP code input
      *
-     * @throws RuntimeException When verification fails
      *
-     * @return string Derived key material
+     * @throws RuntimeException When verification fails
+     * @return string           Derived key material
      */
     public function provide(User $user, ?string $input): string
     {

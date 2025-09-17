@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Crypt;
 use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
-use N3XT0R\FilamentLockbox\Support\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
+use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 
 class LockboxManagerTest extends TestCase
@@ -24,6 +24,7 @@ class LockboxManagerTest extends TestCase
 
         $user = new class () extends User implements HasLockboxKeys {
             use InteractsWithLockboxKeys;
+
             protected $guarded = [];
         };
         $user->id = 1;

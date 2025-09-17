@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support\KeyMaterial;
+namespace N3XT0R\FilamentLockbox\Managers\KeyMaterial;
 
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\UserKeyMaterialProviderInterface;
@@ -39,9 +39,9 @@ class PasskeyKeyMaterialProvider implements UserKeyMaterialProviderInterface
      * @param User        $user  User providing the passkey
      * @param string|null $input Unused input
      *
-     * @throws RuntimeException When passkey data is missing or invalid
      *
-     * @return string Derived key material
+     * @throws RuntimeException When passkey data is missing or invalid
+     * @return string           Derived key material
      */
     public function provide(User $user, ?string $input): string
     {
@@ -79,7 +79,7 @@ class PasskeyKeyMaterialProvider implements UserKeyMaterialProviderInterface
         return hash(
             'sha256',
             hash_hmac('sha256', $passkey->getAttribute('credential_id'), config('app.key'))
-                . $user->getKey(),
+            . $user->getKey(),
             true,
         );
     }

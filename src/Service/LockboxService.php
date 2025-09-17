@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Support;
+namespace N3XT0R\FilamentLockbox\Service;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
 use N3XT0R\FilamentLockbox\Models\Lockbox;
 use RuntimeException;
 
@@ -55,8 +56,8 @@ class LockboxService
      * @param string           $name        Lockbox item name
      * @param User|null        $user        Authenticated user
      *
-     * @throws RuntimeException If the user model does not support lockbox keys
      *
+     * @throws RuntimeException If the user model does not support lockbox keys
      * @return bool
      */
     public function exists(

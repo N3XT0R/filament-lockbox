@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use N3XT0R\FilamentLockbox\Jobs\ReencryptLockboxData;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
 use PHPUnit\Framework\TestCase;
 
 class ReencryptLockboxDataTest extends TestCase

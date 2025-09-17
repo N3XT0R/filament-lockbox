@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
 use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockboxKeys;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 use RuntimeException;
 
@@ -18,6 +18,7 @@ class CryptoPasswordKeyMaterialProviderTest extends TestCase
     {
         $user = new class () extends User implements HasLockboxKeys {
             use InteractsWithLockboxKeys;
+
             protected $guarded = [];
         };
 
@@ -50,6 +51,7 @@ class CryptoPasswordKeyMaterialProviderTest extends TestCase
     {
         $user = new class () extends User implements HasLockboxKeys {
             use InteractsWithLockboxKeys;
+
             protected $guarded = [];
         };
         $user->id = 1;

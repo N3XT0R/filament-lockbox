@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\PasskeyKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\PasskeyKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Spatie\LaravelPasskeys\Models\Passkey;

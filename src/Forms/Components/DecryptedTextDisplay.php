@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\HtmlString;
 use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
-use N3XT0R\FilamentLockbox\Support\LockboxService;
+use N3XT0R\FilamentLockbox\Service\LockboxService;
 
 /**
  * Displays decrypted value of a field stored with EncryptedTextInput.

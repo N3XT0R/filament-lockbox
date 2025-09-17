@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\FilamentLockbox\Tests\Unit\Forms;
+namespace N3XT0R\FilamentLockbox\Tests\Unit\Forms\Components;
 
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
 use PHPUnit\Framework\TestCase;

@@ -15,8 +15,8 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use N3XT0R\FilamentLockbox\Contracts\HasLockboxKeys;
 use N3XT0R\FilamentLockbox\Jobs\ReencryptLockboxData;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider;
-use N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
+use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 
 class LockboxStatusWidget extends Widget implements HasForms
 {
@@ -47,8 +47,13 @@ class LockboxStatusWidget extends Widget implements HasForms
             $this->provider = $user->getLockboxProvider();
         }
 
-        // Initialize the form state with current property values
-        $this->form->fill();
+        $this->resetState();
+    }
+
+    protected function resetState(): void
+    {
+        $this->cryptoPassword = null;
+        $this->totpCode = null;
     }
 
     /**
@@ -149,10 +154,7 @@ class LockboxStatusWidget extends Widget implements HasForms
             ->success()
             ->send();
 
-        $this->cryptoPassword = null;
-        $this->totpCode = null;
-
-        $this->form->fill();
+        $this->resetState();
     }
 
     /**
@@ -161,6 +163,7 @@ class LockboxStatusWidget extends Widget implements HasForms
     protected function getProviderOptions(): array
     {
         $providers = config('filament-lockbox.providers', []);
+        $providers[] = CryptoPasswordKeyMaterialProvider::class;
 
         return collect($providers)
             ->mapWithKeys(fn (string $class) => [$class => class_basename($class)])

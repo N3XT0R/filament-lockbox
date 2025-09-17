@@ -12,10 +12,17 @@
 This package allows you to encrypt and decrypt sensitive data on a per-user basis, using a split-key approach:
 
 - **Part A** (server-side key) is stored encrypted in the database.
-- **Part B** (user-provided secret) is collected at runtime (crypto password or TOTP).
+- **Part B** (user-provided secret) is collected at runtime (crypto password, passkey, or TOTP).
 - **Final key** is derived from PartA + PartB using `hash('sha256', ...)`.
 
 This ensures that **even administrators cannot decrypt data** without the user-provided input.
+
+---
+
+## 🚧 Project Status
+
+This package is currently in **alpha** and under active development. Features and APIs may change before a stable
+release.
 
 ---
 
@@ -25,11 +32,62 @@ This ensures that **even administrators cannot decrypt data** without the user-p
 - 🧩 **Plug-and-play Filament components**:
     - `EncryptedTextInput` → encrypts before save
     - `DecryptedTextDisplay` → decrypts on display
-    - `UnlockLockboxAction` → prompts for crypto password/TOTP
+    - `UnlockLockboxAction` → prompts for crypto password or TOTP
 - 🔒 **User-configurable crypto password support**
+- 🗝️ **Passkey (WebAuthn) support** if your user implements `HasPasskeys`
 - 🔐 **TOTP support** if your user implements `HasAppAuthentication`
 - 🛡️ **Zero-knowledge for admins** – data is unreadable without user input
-- ⚙️ **Configurable key material providers** (PBKDF2, TOTP, custom)
+- ⚙️ **Configurable key material providers** (PBKDF2, Passkeys, TOTP, custom)
+
+---
+
+## 🗄️ Centralized Lockbox Storage
+
+Unlike typical field encryption solutions, **Filament Lockbox does not store encrypted data on your models**.  
+Instead, all encrypted values are kept in a dedicated, polymorphic `lockbox` table — completely transparent to your
+application.
+
+### ✅ Benefits of This Architecture
+
+- **Drop-in Usage**  
+  Simply use `EncryptedTextInput` anywhere in your Filament form schema — no schema changes or model attributes
+  required.
+
+- **Polymorphic & Universal**  
+  Works with any Eloquent model (`User`, `Product`, `Order`, ...).  
+  All sensitive data is centralized, making it easy to see which records have encrypted fields.
+
+- **Performance-Friendly**  
+  Main tables remain lean and fast, as encrypted data is kept out of your core business tables.
+
+- **Compliance & Auditing**
+    - Simplified GDPR / “Right to be Forgotten”: just delete Lockbox entries per user.
+    - Perfect for audits: one table gives full visibility of all encrypted fields.
+    - Allows separate backup and retention strategies.
+
+- **Developer Experience**
+    - No manual hooks or closures needed — saving & loading is handled automatically.
+    - `dehydrated(false)` is applied internally.
+    - Just replace `TextInput` with `EncryptedTextInput` and get full encryption.
+
+```php
+$form->schema([
+    // Before:
+    TextInput::make('credit_card'),
+
+    // After:
+    EncryptedTextInput::make('credit_card')
+        ->label('Credit Card'),
+]);
+```
+
+The plugin takes care of everything:
+
+- 🔑 Per-user key management
+- 🔐 Encryption & decryption
+- 🗄️ Transparent Lockbox record handling
+- 🔄 Auto-loading of values on form display
+- 🧹 Automatic cleanup when models are deleted
 
 ---
 
@@ -47,7 +105,7 @@ This ensures that **even administrators cannot decrypt data** without the user-p
                        │
                        │
            ┌───────────▼───────────┐
-           │  Part B (User Input) │  ← crypto password or TOTP
+           │  Part B (User Input) │  ← crypto password, passkey, or TOTP
            └───────────┬──────────┘
                        │ combine
                        ▼
@@ -66,8 +124,22 @@ This means **database leaks alone cannot decrypt your data** – PartB must be p
 
 ## 🚀 Installation
 
+Install the package via Composer:
+
 ```bash
 composer require n3xt0r/filament-lockbox
+```
+
+> **Important:**  
+> This package integrates with [`spatie/laravel-passkeys`](https://github.com/spatie/laravel-passkeys).
+> Before running the install command, make sure you have published and run the Spatie migrations:
+
+```bash
+php artisan vendor:publish --provider="Spatie\\LaravelPasskeys\\LaravelPasskeysServiceProvider" --tag="laravel-passkeys-migrations"
+php artisan migrate
+Run the install command to publish all required assets and migrations:
+
+```bash
 php artisan filament-lockbox:install
 ```
 
@@ -99,12 +171,12 @@ class AdminPanelProvider extends PanelProvider
 Optional configuration:
 
 ```php
-// config/filament-filament-lockbox.php
+// config/filament-lockbox.php
 return [
     'show_widget' => true, // set false to hide the status widget
     'providers' => [
-        \N3XT0R\FilamentLockbox\Support\KeyMaterial\TotpKeyMaterialProvider::class,
-        \N3XT0R\FilamentLockbox\Support\KeyMaterial\CryptoPasswordKeyMaterialProvider::class,
+        \N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider::class,
+        \N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider::class,
     ],
 ];
 ```
@@ -126,7 +198,7 @@ Your `User` model must:
 - Use the `InteractsWithLockboxKeys` trait
 - Hide and cast the lockbox fields
 
-### Example
+### Example: User Model
 
 ```php
 use Filament\Models\Contracts\FilamentUser;
@@ -142,6 +214,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     protected $hidden = [
         'encrypted_user_key',
         'crypto_password_hash',
+        'lockbox_provider',
     ];
 
     protected function casts(): array
@@ -149,10 +222,40 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return [
             'encrypted_user_key' => 'encrypted',
             'crypto_password_hash' => 'string',
+            'lockbox_provider' => 'string',
         ];
     }
 }
 ```
+
+### Example: Any Model with Encrypted Fields
+
+Any Eloquent model that should have encrypted fields must:
+
+- Implement `HasLockbox`
+- Use the `InteractsWithLockbox` trait
+
+This enables the polymorphic relation to the `lockbox` table and lets the package handle encryption transparently.
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use N3XT0R\FilamentLockbox\Contracts\HasLockbox;
+use N3XT0R\FilamentLockbox\Concerns\InteractsWithLockbox;
+
+class Company extends Model implements HasLockbox
+{
+    use InteractsWithLockbox;
+
+    protected $fillable = [
+        'name',
+        'email',
+        // no need to list encrypted fields here – they live in the lockbox table
+    ];
+}
+```
+
+You can now use `EncryptedTextInput::make('field_name')` in your Filament form schemas for this model —  
+the package will automatically store and retrieve the data from the centralized `lockbox` table.
 
 ---
 
@@ -160,7 +263,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
 
 1. Go to the **Lockbox widget** in your Filament panel.
 2. Click **Generate Lockbox Key**.
-3. Set a **crypto password** (or enable TOTP).
+3. Set a **crypto password**, register a **passkey**, or enable **TOTP**.
 4. Unlock once per session to access or modify encrypted fields.
 
 ---
@@ -210,13 +313,13 @@ $form
 
 ---
 
-### 🔑 Optional Integration: Passkeys
+### 🔑 Passkeys (WebAuthn)
 
 This package ships with built-in support for [spatie/laravel-passkeys](https://github.com/spatie/laravel-passkeys) and
-installs it by default.
+requires it by default.
 
-Whether Passkeys are used or not can be controlled via this package's configuration.
-If you don't plan to use WebAuthn/Passkeys, you can disable the integration in `config/filament-lockbox.php`.
+You can control Passkey usage via this package's configuration.
+If you don't plan to use WebAuthn/Passkeys, disable the integration in `config/filament-lockbox.php`.
 
 
 ---

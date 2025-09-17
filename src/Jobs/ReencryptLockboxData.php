@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use N3XT0R\FilamentLockbox\Support\LockboxManager;
+use N3XT0R\FilamentLockbox\Managers\LockboxManager;
 
 /**
  * Job to re-encrypt lockbox data when the provider changes.

@@ -48,11 +48,14 @@ class Lockbox extends Model
     /**
      * Relationship to the owning user.
      *
-     * @return BelongsTo<User, self>
+     * @return BelongsTo<User, static>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        /** @var BelongsTo<User, static> $relation */
+        $relation = $this->belongsTo(User::class);
+
+        return $relation;
     }
 
     public function grants(): HasMany

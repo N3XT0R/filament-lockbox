@@ -6,6 +6,8 @@ namespace N3XT0R\FilamentLockbox;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use N3XT0R\FilamentLockbox\Widgets\LockboxAuditLogWidget;
+use N3XT0R\FilamentLockbox\Widgets\LockboxGrantTableWidget;
 use N3XT0R\FilamentLockbox\Widgets\LockboxStatusWidget;
 
 /**
@@ -38,10 +40,22 @@ class FilamentLockboxPlugin implements Plugin
      */
     public function register(Panel $panel): void
     {
+        $widgets = [];
+
         if (config('filament-lockbox.show_widget', true)) {
-            $panel->widgets([
-                LockboxStatusWidget::class,
-            ]);
+            $widgets[] = LockboxStatusWidget::class;
+        }
+
+        if (config('filament-lockbox.show_grants_widget', true)) {
+            $widgets[] = LockboxGrantTableWidget::class;
+        }
+
+        if (config('filament-lockbox.show_audit_widget', true)) {
+            $widgets[] = LockboxAuditLogWidget::class;
+        }
+
+        if ($widgets !== []) {
+            $panel->widgets($widgets);
         }
     }
 

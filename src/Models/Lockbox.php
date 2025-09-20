@@ -23,6 +23,7 @@ use Illuminate\Foundation\Auth\User;
  * @property string $name
  * @property string $value
  * @property string $encrypted_dek
+ * @property int    $dek_version
  */
 class Lockbox extends Model
 {
@@ -33,6 +34,7 @@ class Lockbox extends Model
         'name',
         'value',
         'encrypted_dek',
+        'dek_version',
     ];
 
     /**
@@ -61,5 +63,13 @@ class Lockbox extends Model
     public function grants(): HasMany
     {
         return $this->hasMany(LockboxGrant::class);
+    }
+
+    /**
+     * Related audit trail entries for this lockbox.
+     */
+    public function audits(): HasMany
+    {
+        return $this->hasMany(LockboxAudit::class);
     }
 }

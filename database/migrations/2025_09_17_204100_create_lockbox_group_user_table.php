@@ -19,7 +19,6 @@ return new class () extends Migration {
             $table->text('wrapped_group_key_for_user');
 
             $table->timestamps();
-            $table->unique(['group_id', 'user_id']);
         });
     }
 

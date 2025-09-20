@@ -47,7 +47,7 @@ class SharedEncryptedTextInput extends EncryptedTextInput
         $this->afterStateHydrated(function (SharedEncryptedTextInput $component): void {
             $record = $component->getRecord();
 
-            if (!$record) {
+            if (!is_object($record) || !method_exists($record, 'lockbox')) {
                 return;
             }
 

@@ -27,8 +27,6 @@ return new class () extends Migration {
             $table->timestamp('expires_at')->nullable();
 
             $table->timestamps();
-
-            $table->index(['lockbox_id', 'grantee_type', 'grantee_id']);
         });
     }
 

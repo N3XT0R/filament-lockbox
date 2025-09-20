@@ -57,9 +57,12 @@ class SharedDecryptedTextDisplay extends DecryptedTextDisplay
             }
 
             $record = $component->getRecord();
+            if (!is_object($record) || !method_exists($record, 'lockbox')) {
+                return;
+            }
+
             /**
              * @var User $user
-             *
              */
             $user = auth()->user();
 
@@ -102,13 +105,13 @@ class SharedDecryptedTextDisplay extends DecryptedTextDisplay
      */
     protected function resolveSharedByName(?LockboxGrant $grant): ?string
     {
-        if (!$grant) {
+        if ($grant === null) {
             return null;
         }
 
         $grantee = $grant->grantee;
 
-        if (!$grantee) {
+        if ($grantee === null) {
             return null;
         }
 

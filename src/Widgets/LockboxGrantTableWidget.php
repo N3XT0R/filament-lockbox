@@ -19,27 +19,24 @@ use N3XT0R\FilamentLockbox\Models\LockboxGroup;
  */
 class LockboxGrantTableWidget extends TableWidget
 {
-    protected function getTableQuery(): Builder
-    {
-        $user = Auth::user();
-
-        if (!$user instanceof Model) {
-            return LockboxGrant::query()->whereRaw('1 = 0');
-        }
-
-        return LockboxGrant::query()
-            ->with(['lockbox', 'grantee'])
-            ->whereHas('lockbox', static function (Builder $query) use ($user): void {
-                $query->where('user_id', $user->getKey());
-            })
-            ->latest('created_at');
-    }
-
     public function table(Table $table): Table
     {
         return $table
             ->heading(__('filament-lockbox::lockbox.widgets.grants_heading'))
-            ->query($this->getTableQuery())
+            ->query(function (): Builder {
+                $user = Auth::user();
+
+                if (!$user instanceof Model) {
+                    return LockboxGrant::query()->whereRaw('1 = 0');
+                }
+
+                return LockboxGrant::query()
+                    ->with(['lockbox', 'grantee'])
+                    ->whereHas('lockbox', static function (Builder $query) use ($user): void {
+                        $query->where('user_id', $user->getKey());
+                    })
+                    ->latest('created_at');
+            })
             ->columns([
                 TextColumn::make('lockbox.name')
                     ->label(__('filament-lockbox::lockbox.table.lockbox'))
@@ -57,7 +54,7 @@ class LockboxGrantTableWidget extends TableWidget
                     ->since()
                     ->sortable(),
             ])
-            ->actions([
+            ->recordActions([
                 RevokeLockboxGrantAction::make()
                     ->visible(static fn (LockboxGrant $record): bool => $record->lockbox?->getAttribute('user_id') === Auth::id()),
             ])

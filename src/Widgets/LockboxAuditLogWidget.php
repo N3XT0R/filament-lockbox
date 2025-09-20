@@ -18,27 +18,24 @@ use N3XT0R\FilamentLockbox\Models\LockboxAudit;
  */
 class LockboxAuditLogWidget extends TableWidget
 {
-    protected function getTableQuery(): Builder
-    {
-        $user = Auth::user();
-
-        if (!$user instanceof Model) {
-            return LockboxAudit::query()->whereRaw('1 = 0');
-        }
-
-        return LockboxAudit::query()
-            ->with(['lockbox', 'actor'])
-            ->whereHas('lockbox', static function (Builder $query) use ($user): void {
-                $query->where('user_id', $user->getKey());
-            })
-            ->latest('created_at');
-    }
-
     public function table(Table $table): Table
     {
         return $table
             ->heading(__('filament-lockbox::lockbox.widgets.audit_heading'))
-            ->query($this->getTableQuery())
+            ->query(function (): Builder {
+                $user = Auth::user();
+
+                if (!$user instanceof Model) {
+                    return LockboxAudit::query()->whereRaw('1 = 0');
+                }
+
+                return LockboxAudit::query()
+                    ->with(['lockbox', 'actor'])
+                    ->whereHas('lockbox', static function (Builder $query) use ($user): void {
+                        $query->where('user_id', $user->getKey());
+                    })
+                    ->latest('created_at');
+            })
             ->columns([
                 TextColumn::make('lockbox.name')
                     ->label(__('filament-lockbox::lockbox.table.lockbox'))

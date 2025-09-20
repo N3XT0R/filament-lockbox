@@ -7,6 +7,8 @@ use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 
 return [
     'show_widget' => true, // set to false if you don't want the status widget auto-added
+    'show_grants_widget' => true, // toggles the shared grants table widget
+    'show_audit_widget' => true, // toggles the audit trail widget
 
     /*
     |--------------------------------------------------------------------------

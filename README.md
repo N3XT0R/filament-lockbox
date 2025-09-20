@@ -330,6 +330,23 @@ recipient.
 
 ---
 
+### ♻️ Revoking Access
+
+To revoke an existing grant directly from your tables or infolists, drop in the reusable `RevokeLockboxGrantAction`.
+Users can optionally rotate the lockbox DEK during revocation to force new wraps for remaining recipients.
+
+```php
+use N3XT0R\FilamentLockbox\Forms\Actions\RevokeLockboxGrantAction;
+
+RevokeLockboxGrantAction::make()
+    ->visible(fn ($record) => auth()->id() === optional($record->lockbox)->user_id);
+```
+
+The package also ships with dashboard widgets – `LockboxGrantTableWidget` and `LockboxAuditLogWidget` – that surface
+active grants and recent audit trail entries so operators can observe sharing activity in real time.
+
+---
+
 ### 2️⃣ Displaying Shared Values
 
 For users who received access via a grant, you can display the value using:

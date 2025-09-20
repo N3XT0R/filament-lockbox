@@ -28,6 +28,16 @@ interface LockboxGrantServiceInterface
     public function shareWithGroup(Lockbox $lockbox, LockboxGroup $group): LockboxGrant;
 
     /**
+     * ⚠️ Revoke a grant and optionally rotate the lockbox DEK for the remaining recipients.
+     *
+     * @param LockboxGrant $grant     Grant to revoke
+     * @param bool         $rotateDek Whether to rotate the DEK after revocation
+     *
+     * @return void
+     */
+    public function revokeGrant(LockboxGrant $grant, bool $rotateDek = false): void;
+
+    /**
      * Resolve a usable DEK for a given user (direct grant or via group).
      *
      * @param Lockbox $lockbox Lockbox entry

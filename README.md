@@ -3,6 +3,7 @@
 [![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/filament-lockbox)
 [![Latest Stable Version](https://poser.pugx.org/n3xt0r/filament-lockbox/v/stable)](https://packagist.org/packages/n3xt0r/filament-lockbox)
 [![License](https://poser.pugx.org/n3xt0r/filament-lockbox/license)](https://packagist.org/packages/n3xt0r/filament-lockbox)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/N3XT0R/filament-lockbox?utm_source=oss&utm_medium=github&utm_campaign=N3XT0R%2Ffilament-lockbox&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 # Filament Lockbox
 

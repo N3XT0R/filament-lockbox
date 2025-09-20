@@ -11,12 +11,12 @@ use Illuminate\Foundation\Auth\User;
 /**
  * Audit trail entry for sensitive lockbox events.
  *
- * @property int         $id
- * @property int         $lockbox_id
- * @property int|null    $grant_id
- * @property int|null    $actor_id
- * @property string      $event
- * @property array|null  $context
+ * @property int        $id
+ * @property int        $lockbox_id
+ * @property int|null   $grant_id
+ * @property int|null   $actor_id
+ * @property string     $event
+ * @property array|null $context
  */
 class LockboxAudit extends Model
 {

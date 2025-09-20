@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Services;
 
+use function base64_decode;
+use function base64_encode;
+use function config;
+use function event;
+
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
+use function is_string;
+
 use N3XT0R\FilamentLockbox\Contracts\Services\LockboxGrantServiceInterface;
 use N3XT0R\FilamentLockbox\Events\LockboxAccessed;
 use N3XT0R\FilamentLockbox\Events\LockboxGrantCreated;
@@ -17,15 +25,12 @@ use N3XT0R\FilamentLockbox\Models\Lockbox;
 use N3XT0R\FilamentLockbox\Models\LockboxAudit;
 use N3XT0R\FilamentLockbox\Models\LockboxGrant;
 use N3XT0R\FilamentLockbox\Models\LockboxGroup;
-use N3XT0R\FilamentLockbox\Services\GroupKeyResolver;
-use RuntimeException;
-use function base64_encode;
-use function base64_decode;
-use function config;
-use function event;
-use function is_string;
+
 use function now;
 use function random_bytes;
+
+use RuntimeException;
+
 use function str_starts_with;
 use function strlen;
 use function trim;

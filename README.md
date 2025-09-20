@@ -4,6 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/n3xt0r/filament-lockbox/v/stable)](https://packagist.org/packages/n3xt0r/filament-lockbox)
 [![License](https://poser.pugx.org/n3xt0r/filament-lockbox/license)](https://packagist.org/packages/n3xt0r/filament-lockbox)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/N3XT0R/filament-lockbox?utm_source=oss&utm_medium=github&utm_campaign=N3XT0R%2Ffilament-lockbox&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=N3XT0R_filament-lockbox&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=N3XT0R_filament-lockbox)
 
 # Filament Lockbox
 

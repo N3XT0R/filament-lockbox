@@ -351,6 +351,8 @@ If you don't plan to use WebAuthn/Passkeys, disable the integration in `config/f
 - [ ] Automatic modal prompt if unlock is missing
 - [ ] Session-based unlock expiry
 - [ ] Configurable PBKDF2 parameters
+- [ ] Improve TOTP integration: ensure user-assigned secrets (crypto password) are required and TOTP is used only as a
+  second factor
 
 ---
 

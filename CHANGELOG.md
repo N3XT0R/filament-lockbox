@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **TOTP Key Material**:  
+  Updated `TotpKeyMaterialProvider` to derive key material from the stored app authentication secret concatenated with
+  the user ID, instead of using the raw TOTP code.  
+  This ensures stronger and stable key material while still verifying the user’s TOTP input.
+
+### Added
+
+- **Unit & Integration Tests**:
+    - Added unit tests for `TotpKeyMaterialProvider` to verify support detection and correct key derivation.
+    - Added integration tests for `UserKeyMaterialResolver` with TOTP verification.
+    - Added unit tests for `PasskeyKeyMaterialProvider` with session-based passkey resolution.
+
 ## [1.0.0-alpha]
 
 ### Added

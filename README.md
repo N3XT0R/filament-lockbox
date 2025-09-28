@@ -21,6 +21,23 @@ This ensures that **even administrators cannot decrypt data** without the user-p
 
 ---
 
+## 🧪 Code Quality & Coverage
+
+To ensure long-term maintainability and security, this package is continuously analyzed with two systems:
+
+- **SonarQube Cloud**  
+  Monitors code quality, maintainability, and potential security issues. Results are automatically updated on every
+  commit.
+
+- **qlty.sh**  
+  Provides detailed **path coverage** via PHPUnit’s `--path-coverage`, ensuring not only that lines are executed but
+  also that different execution paths are validated. This complements SonarQube by adding deeper insights into
+  complexity and maintainability.
+
+Both tools run in CI and guarantee that security and quality checks are part of the development workflow.
+
+---
+
 ## 🚧 Project Status
 
 This package is currently in **alpha** and under active development. Features and APIs may change before a stable

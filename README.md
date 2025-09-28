@@ -32,8 +32,9 @@ To ensure long-term maintainability and security, this package is continuously a
 - **qlty.sh**  
   Provides detailed **path coverage** via PHPUnit’s `--path-coverage`, ensuring not only that lines are executed but
   also that different execution paths are validated.  
-  Compared to branch coverage, path coverage offers a more fine-grained view, as it validates the actual execution flows
-  through complex conditions rather than only checking if each branch was taken at least once.
+  For cryptographic code, this level of coverage is especially important: it verifies complete execution flows (e.g.
+  valid vs. invalid keys, missing secrets, or failed TOTP checks).  
+  Compared to branch coverage, path coverage ensures higher confidence in correctness and security-critical behavior.
 
 Both tools run in CI and guarantee that security and quality checks are part of the development workflow.
 

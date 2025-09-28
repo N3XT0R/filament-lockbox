@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-alpha.1] - 2025-09-28
+
 ### Fixed
 
 - **TOTP Key Material**:  
@@ -21,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Added integration tests for `UserKeyMaterialResolver` with TOTP verification.
     - Added unit tests for `PasskeyKeyMaterialProvider` with session-based passkey resolution.
 
-## [1.0.0-alpha]
+## [1.0.0-alpha] - 2025-09-20
 
 ### Added
 

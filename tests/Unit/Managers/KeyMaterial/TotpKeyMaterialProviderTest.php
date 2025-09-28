@@ -11,12 +11,13 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
+use RuntimeException;
 
 class TotpKeyMaterialProviderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private function createUser(string $secret): User&HasAppAuthentication
+    private function createUser(?string $secret): User&HasAppAuthentication
     {
         $user = new class () extends User implements HasAppAuthentication {
             public ?string $secret = null;
@@ -50,6 +51,13 @@ class TotpKeyMaterialProviderTest extends TestCase
         $this->assertTrue($provider->supports($user));
     }
 
+    public function testSupportsReturnsFalseWhenSecretMissing(): void
+    {
+        $user = $this->createUser(null);
+        $provider = new TotpKeyMaterialProvider();
+        $this->assertFalse($provider->supports($user));
+    }
+
     public function testProvideReturnsDerivedKeyForValidCode(): void
     {
         $user = $this->createUser('secret');
@@ -60,7 +68,49 @@ class TotpKeyMaterialProviderTest extends TestCase
         $this->app->instance(AppAuthentication::class, $mock);
 
         $key = $provider->provide($user, '123456');
-        $expected = hash('sha256', '123456' . $user->getKey(), true);
+
+        // expected hash is based on secret + user id (not code)
+        $expected = hash('sha256', $user->getAppAuthenticationSecret() . $user->getKey(), true);
+
         $this->assertSame($expected, $key);
+    }
+
+    public function testProvideThrowsWhenUserDoesNotImplementInterface(): void
+    {
+        $user = new User();
+        $user->id = 1;
+
+        $provider = new TotpKeyMaterialProvider();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessageMatches('/must implement/');
+
+        $provider->provide($user, '123456');
+    }
+
+    public function testProvideThrowsWhenInputIsEmpty(): void
+    {
+        $user = $this->createUser('secret');
+        $provider = new TotpKeyMaterialProvider();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('TOTP input is required.');
+
+        $provider->provide($user, '');
+    }
+
+    public function testProvideThrowsWhenCodeVerificationFails(): void
+    {
+        $user = $this->createUser('secret');
+        $provider = new TotpKeyMaterialProvider();
+
+        $mock = Mockery::mock(AppAuthentication::class);
+        $mock->shouldReceive('verifyCode')->with('999999', 'secret')->andReturn(false);
+        $this->app->instance(AppAuthentication::class, $mock);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid TOTP code.');
+
+        $provider->provide($user, '999999');
     }
 }

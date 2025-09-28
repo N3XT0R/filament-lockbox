@@ -65,6 +65,6 @@ class TotpKeyMaterialProvider implements UserKeyMaterialProviderInterface
             throw new RuntimeException('Invalid TOTP code.');
         }
 
-        return hash('sha256', $input . $user->getKey(), true);
+        return hash('sha256', $user->getAppAuthenticationSecret() . $user->getKey(), true);
     }
 }

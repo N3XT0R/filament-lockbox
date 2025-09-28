@@ -31,8 +31,10 @@ To ensure long-term maintainability and security, this package is continuously a
 
 - **qlty.sh**  
   Provides detailed **path coverage** via PHPUnit’s `--path-coverage`, ensuring not only that lines are executed but
-  also that different execution paths are validated. This complements SonarQube by adding deeper insights into
-  complexity and maintainability.
+  also that different execution paths are validated.  
+  For cryptographic code, this level of coverage is especially important: it verifies complete execution flows (e.g.
+  valid vs. invalid keys, missing secrets, or failed TOTP checks).  
+  Compared to branch coverage, path coverage ensures higher confidence in correctness and security-critical behavior.
 
 Both tools run in CI and guarantee that security and quality checks are part of the development workflow.
 
@@ -349,6 +351,8 @@ If you don't plan to use WebAuthn/Passkeys, disable the integration in `config/f
 - [ ] Automatic modal prompt if unlock is missing
 - [ ] Session-based unlock expiry
 - [ ] Configurable PBKDF2 parameters
+- [ ] Improve TOTP integration: ensure user-assigned secrets (crypto password) are required and TOTP is used only as a
+  second factor
 
 ---
 

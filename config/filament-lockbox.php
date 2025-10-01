@@ -31,4 +31,16 @@ return [
         // optional TTL in seconds for requiring re-unlock after some time, implement as needed:
         'ttl' => 900,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Model
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define which User model should be used with the Lockbox.
+    | By default we use the application's configured authentication provider.
+    |
+    */
+
+    'user_model' => env('LOCKBOX_USER_MODEL', config('auth.providers.users.model')),
 ];

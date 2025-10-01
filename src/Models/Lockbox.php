@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\FilamentLockbox\Models;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -49,9 +50,9 @@ class Lockbox extends Model
      */
     public function user(): BelongsTo
     {
-        /** @var BelongsTo<User, static> $relation */
-        $relation = $this->belongsTo(User::class);
+        /** @var class-string<Authenticatable&Model> $userModel */
+        $userModel = config('filament-lockbox.user_model');
 
-        return $relation;
+        return $this->belongsTo($userModel);
     }
 }

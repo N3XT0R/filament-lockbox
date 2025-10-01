@@ -19,10 +19,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Livewire\LivewireServiceProvider;
 use N3XT0R\FilamentLockbox\FilamentLockboxServiceProvider;
+use N3XT0R\FilamentLockbox\Tests\Stubs\Auth\LockboxUser;
+use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
+#[WithMigration]
 class TestCase extends Orchestra
 {
     use LazilyRefreshDatabase;
@@ -65,6 +68,8 @@ class TestCase extends Orchestra
     {
         $app['config']->set('database.default', 'testing');
         $app['config']->set('app.key', 'base64:' . base64_encode(random_bytes(32)));
+        $app['config']->set('filament-lockbox.user_model', LockboxUser::class);
+
     }
 
     protected function defineDatabaseMigrations(): void

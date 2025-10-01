@@ -9,6 +9,7 @@ use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\Stubs\Auth\TotpUser;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
+use Illuminate\Foundation\Auth\User as BaseUser;
 use RuntimeException;
 
 class UserKeyMaterialResolverTest extends TestCase

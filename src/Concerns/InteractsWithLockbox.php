@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User;
 use N3XT0R\FilamentLockbox\Models\Lockbox;
 use N3XT0R\FilamentLockbox\Services\LockboxService;
-use RuntimeException;
 
 /** @phpstan-ignore-next-line */
 
@@ -24,6 +23,8 @@ use RuntimeException;
  */
 trait InteractsWithLockbox
 {
+    use EnsuresModelContext;
+
     /**
      * Define the lockbox relationship.
      *
@@ -66,19 +67,5 @@ trait InteractsWithLockbox
         $this->ensureModelContext();
 
         return app(LockboxService::class)->get($this, $name, $user);
-    }
-
-    /**
-     * Ensure this trait is used within an Eloquent model.
-     *
-     *
-     * @throws RuntimeException If not used on a model
-     * @return void
-     */
-    protected function ensureModelContext(): void
-    {
-        if (!$this instanceof Model) {
-            throw new RuntimeException(static::class . ' must be used on an Eloquent Model.');
-        }
     }
 }

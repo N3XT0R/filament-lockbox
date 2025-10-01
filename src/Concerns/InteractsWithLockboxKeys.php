@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Random\RandomException;
-use RuntimeException;
 
 /**
  * Provides helper methods for models using lockbox keys.
@@ -21,6 +20,8 @@ use RuntimeException;
  */
 trait InteractsWithLockboxKeys
 {
+    use EnsuresModelContext;
+
     /**
      * Get the encrypted user key.
      *
@@ -106,8 +107,8 @@ trait InteractsWithLockboxKeys
     /**
      * Generate and store an encrypted user key if one does not exist.
      *
-     * @throws RandomException If random bytes cannot be generated
      *
+     * @throws RandomException If random bytes cannot be generated
      * @return void
      */
     public function initializeUserKeyIfMissing(): void
@@ -150,19 +151,5 @@ trait InteractsWithLockboxKeys
 
         /** @var Model $this */
         return !empty($this->getAttribute('encrypted_user_key'));
-    }
-
-    /**
-     * Ensure this trait is used within an Eloquent model context.
-     *
-     * @throws RuntimeException If not used on a model
-     *
-     * @return void
-     */
-    protected function ensureModelContext(): void
-    {
-        if (!$this instanceof Model) {
-            throw new RuntimeException(static::class . ' must be used on an Eloquent Model.');
-        }
     }
 }

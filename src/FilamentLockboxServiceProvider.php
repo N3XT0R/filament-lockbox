@@ -16,6 +16,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Event;
 use Livewire\Features\SupportTesting\Testable;
 use N3XT0R\FilamentLockbox\Commands\FilamentLockboxCommand;
+use N3XT0R\FilamentLockbox\Forms\Components\DecryptedTextDisplay;
 use N3XT0R\FilamentLockbox\Forms\Components\EncryptedTextInput;
 use N3XT0R\FilamentLockbox\Listeners\SetLockboxPasskeyFlag;
 use N3XT0R\FilamentLockbox\Managers\KeyMaterial\CryptoPasswordKeyMaterialProvider;
@@ -137,8 +138,12 @@ class FilamentLockboxServiceProvider extends PackageServiceProvider
     protected function registerComponents(): void
     {
         // Register a macro for convenient usage in Filament forms
-        FormsComponent::macro('encryptedText', function (string $name) {
+        FormsComponent::macro('encryptedText', static function (string $name) {
             return EncryptedTextInput::make($name);
+        });
+
+        FormsComponent::macro('decryptedText', static function (string $name) {
+            return DecryptedTextDisplay::make($name);
         });
     }
 

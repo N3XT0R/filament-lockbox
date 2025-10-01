@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Tests\Integration\Resolvers;
 
 use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Illuminate\Foundation\Auth\User as BaseUser;
 use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
 use N3XT0R\FilamentLockbox\Tests\Stubs\Auth\TotpUser;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
-use Illuminate\Foundation\Auth\User as BaseUser;
 use RuntimeException;
 
 class UserKeyMaterialResolverTest extends TestCase

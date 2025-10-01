@@ -21,11 +21,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Introduced factories for `Lockbox`, `LockboxUser`, and stub user models to simplify test setup.  
   Added a reusable trait to declare `newFactory` for all test user model variations.
 
+- **Traits**:  
+  Added `EnsuresModelContext` trait to DRY up and standardize model context checks used across `InteractsWithLockbox`
+  and `InteractsWithLockboxKeys`.
+
 ### Fixed
 
-- **Config Overriding**:  
+- **Config**:  
   `filament-lockbox.user_model` can now be overridden in `config/filament-lockbox.php` instead of being hardcoded.  
   This allows custom user model configuration in consuming applications.
+- **Static Analysis**:
+    - Corrected PHPStan return type for `Lockbox::user()` to eliminate covariance error.
+    - Suppressed false positives for unused internal traits in PHPStan config.
+
+- **Tests**:  
+  Stabilized integration tests by using factories instead of manually persisted models, ensuring migrations and model
+  attributes (e.g. `lockbox_provider`) align with the schema.
 
 ## [1.0.0-alpha.1] - 2025-09-28
 

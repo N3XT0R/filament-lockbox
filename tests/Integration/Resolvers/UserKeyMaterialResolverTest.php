@@ -5,32 +5,11 @@ declare(strict_types=1);
 namespace N3XT0R\FilamentLockbox\Tests\Integration\Resolvers;
 
 use Filament\Auth\MultiFactor\App\AppAuthentication;
-use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
-use Illuminate\Foundation\Auth\User as BaseUser;
 use N3XT0R\FilamentLockbox\Managers\KeyMaterial\TotpKeyMaterialProvider;
 use N3XT0R\FilamentLockbox\Resolvers\UserKeyMaterialResolver;
+use N3XT0R\FilamentLockbox\Tests\Stubs\Auth\TotpUser;
 use N3XT0R\FilamentLockbox\Tests\TestCase;
 use RuntimeException;
-
-class TotpUser extends BaseUser implements HasAppAuthentication
-{
-    public ?string $appAuthenticationSecret = 'totp-secret';
-
-    public function getAppAuthenticationSecret(): ?string
-    {
-        return $this->appAuthenticationSecret;
-    }
-
-    public function saveAppAuthenticationSecret(?string $secret): void
-    {
-        $this->appAuthenticationSecret = $secret;
-    }
-
-    public function getAppAuthenticationHolderName(): string
-    {
-        return 'Test User';
-    }
-}
 
 class UserKeyMaterialResolverTest extends TestCase
 {

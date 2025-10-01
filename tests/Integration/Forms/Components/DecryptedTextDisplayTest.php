@@ -129,7 +129,7 @@ class DecryptedTextDisplayTest extends TestCase
         $this->assertStringContainsString('—', (string)$component->getState());
     }
 
-    public function testShowsDashWhenNoAuthenticatedUser(): void
+    public function testShowsErrorWhenUserModelDoesNotSupportLockboxKeys(): void
     {
         $record = new DummyHasLockbox();
 
@@ -137,7 +137,7 @@ class DecryptedTextDisplayTest extends TestCase
         $component->container(Schema::make(new DummyLivewire()));
         $component->callAfterStateHydrated();
 
-        $this->assertStringContainsString('—', (string)$component->getState());
+        $this->assertStringContainsString('This user model does not support Lockbox keys.', (string)$component->getState());
     }
 
     public function testShowsDashWhenLockboxValueIsMissing(): void

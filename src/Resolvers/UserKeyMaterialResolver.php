@@ -55,9 +55,9 @@ class UserKeyMaterialResolver
      * @param string|null $input         Optional user input
      * @param string|null $providerClass Specific provider class to use
      *
+     *
      * @throws RuntimeException If no provider can handle the request
      * @return string           Derived key material
-     *
      */
     public function resolve(
         User    $user,
@@ -65,26 +65,38 @@ class UserKeyMaterialResolver
         ?string $providerClass = null,
     ): string {
         if ($providerClass !== null) {
-            foreach ($this->providers as $provider) {
-                if ($provider::class === $providerClass) {
-                    if (!$provider->supports($user)) {
-                        throw new RuntimeException(sprintf(
-                            'Provider %s does not support model %s.',
-                            $providerClass,
-                            $user::class,
-                        ));
-                    }
-
-                    return $provider->provide($user, $input);
-                }
-            }
-
-            throw new RuntimeException(sprintf(
-                'UserKeyMaterial provider %s is not registered.',
-                $providerClass,
-            ));
+            return $this->resolveWithSpecificProvider($user, $input, $providerClass);
         }
 
+        return $this->resolveWithAnyProvider($user, $input);
+    }
+
+    private function resolveWithSpecificProvider(User $user, ?string $input, string $providerClass): string
+    {
+        foreach ($this->providers as $provider) {
+            if ($provider::class !== $providerClass) {
+                continue;
+            }
+
+            if (!$provider->supports($user)) {
+                throw new RuntimeException(sprintf(
+                    'Provider %s does not support model %s.',
+                    $providerClass,
+                    $user::class,
+                ));
+            }
+
+            return $provider->provide($user, $input);
+        }
+
+        throw new RuntimeException(sprintf(
+            'UserKeyMaterial provider %s is not registered.',
+            $providerClass,
+        ));
+    }
+
+    private function resolveWithAnyProvider(User $user, ?string $input): string
+    {
         foreach ($this->providers as $provider) {
             if ($provider->supports($user)) {
                 return $provider->provide($user, $input);

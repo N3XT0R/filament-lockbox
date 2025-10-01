@@ -46,7 +46,7 @@ class Lockbox extends Model
     /**
      * Relationship to the owning user.
      *
-     * @return BelongsTo<User, static>
+     * @return BelongsTo<Authenticatable&Model, $this>
      */
     public function user(): BelongsTo
     {

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Integration Tests**:  
+  Added full coverage for `DecryptedTextDisplay` including cases for:
+    - showing decrypted value when input provided
+    - warning message when input is missing
+    - dash display when record does not implement `HasLockbox`
+    - error when user does not implement `HasLockboxKeys`
+    - dash display when decrypted value is empty or missing
+
+- **Model Factories**:  
+  Introduced factories for `Lockbox`, `LockboxUser`, and stub user models to simplify test setup.  
+  Added a reusable trait to declare `newFactory` for all test user model variations.
+
+### Fixed
+
+- **Config Overriding**:  
+  `filament-lockbox.user_model` can now be overridden in `config/filament-lockbox.php` instead of being hardcoded.  
+  This allows custom user model configuration in consuming applications.
+
 ## [1.0.0-alpha.1] - 2025-09-28
 
 ### Fixed

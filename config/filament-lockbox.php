@@ -42,5 +42,5 @@ return [
     |
     */
 
-    'user_model' => env('LOCKBOX_USER_MODEL', config('auth.providers.users.model')),
+    'user_model' => config('auth.providers.users.model'),
 ];
